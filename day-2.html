@@ -1,0 +1,3250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Team in 3 Days · Day 2 — Hire Content Designer</title>
+
+<!-- Brand favicon · TAM Indigo. Swap stroke color + path for client work. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%236366F1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M24 6l18 10v16L24 42 6 32V16Z'/%3E%3Cpath d='M24 6v16l18 10' opacity='0.5'/%3E%3Cpath d='M24 22L6 32' opacity='0.5'/%3E%3C/svg%3E">
+
+<!-- Fonts · TAM brand kit (Manrope display, Open Sans body, Kalam accent, JetBrains Mono numbers) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+
+<style>
+/* ================================================================
+   THEME TOKENS · TAM brand kit (light theme by default)
+   Source of truth: context/tam-design-system/project/colors_and_type.css
+   60% neutrals · 30% indigo family · 10% accents (coral + teal)
+   ================================================================ */
+:root {
+  /* Surfaces (60% neutrals) */
+  --bg: #F8FAFC;            /* TAM Ghost White — page bg */
+  --bg-elev: #FFFFFF;       /* TAM White — card surface */
+  --surface: #FFFFFF;
+  --surface-alt: #F1F5F9;   /* slightly tinted surface */
+  --border: #E0E7FF;        /* TAM indigo-100 border on light */
+  --border-hover: rgba(99, 102, 241, 0.25);
+  --text: #1E1B4B;          /* TAM Charcoal — body text */
+  --text-paper: #1E1B4B;    /* TAM Charcoal — display text */
+  --text-dim: #475569;      /* TAM Slate — secondary text */
+  --muted: #94A3B8;         /* TAM Cool Gray — placeholders */
+
+  /* Primary · TAM Indigo (30%) */
+  --accent: #6366F1;        /* TAM Indigo */
+  --accent-hover: #4338CA;  /* TAM Deep Indigo */
+  --accent-soft: #818CF8;   /* TAM Soft Indigo */
+  --accent-hl: rgba(99, 102, 241, 0.18);
+  --accent-hl-strong: rgba(99, 102, 241, 0.42);
+  --accent-glow: rgba(99, 102, 241, 0.22);
+  --brand-tint: #C7D2FE;    /* TAM Lavender Mist */
+
+  /* Accents (10%) */
+  --teal: #2DD4BF;          /* Ocean Teal — success/trust */
+  --teal-glow: rgba(45, 212, 191, 0.22);
+  --amber: #F97066;         /* Sunrise Coral — CTA/urgency (kept --amber slot name) */
+  --coral: #F97066;         /* alias */
+
+  /* Reserved supporting colors (used by per-scene graphics) */
+  --violet: #8b5cf6;
+  --cyan: #22d3ee;
+  --red: #ef4444;
+
+  /* TAM brand extras */
+  --tam-indigo-deep: #4338CA;
+  --tam-indigo-soft: #818CF8;
+  --tam-lavender: #C7D2FE;
+  --tam-midnight: #0F172A;  /* heroes / footers only */
+  --tam-charcoal: #1E1B4B;
+
+  /* Brand-tinted shadows (per TAM kit) */
+  --shadow-card-rest:  0 4px 12px rgba(30, 27, 75, 0.08);
+  --shadow-card-hover: 0 10px 30px rgba(30, 27, 75, 0.10);
+  --shadow-brand:      0 4px 14px rgba(99, 102, 241, 0.20);
+
+  /* Signature gradients */
+  --tam-gradient-brand: linear-gradient(135deg, #6366F1 0%, #818CF8 100%);
+  --tam-gradient-warm:  linear-gradient(135deg, #6366F1 0%, #F97066 100%);
+  --tam-gradient-dark:  linear-gradient(180deg, #0F172A 0%, #1E1B4B 100%);
+
+  --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-body:    'Open Sans', system-ui, -apple-system, sans-serif;
+  --font-hand:    'Kalam', 'Caveat', cursive;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  --title-size: clamp(2.6rem, 8vw, 7rem);
+  --h2-size: clamp(1.3rem, 2.8vw, 2.4rem);
+  --h3-size: clamp(0.7rem, 1.1vw, 0.95rem);
+  --body-size: clamp(0.95rem, 1.4vw, 1.2rem);
+  --small-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  --slide-padding: clamp(2rem, 6vw, 6rem);
+  --content-gap: clamp(1rem, 2.2vw, 2rem);
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration: 0.9s;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 100%;
+  overflow: hidden;
+  padding: var(--slide-padding);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(99, 102, 241, 0.10), transparent 55%),
+    radial-gradient(ellipse at 20% 110%, rgba(45, 212, 191, 0.06), transparent 50%);
+}
+
+/* ===== Hexagon mesh canvas ===== */
+#hexBg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== Scattered pixel-agent decorations ===== */
+.pixel-agent {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  image-rendering: pixelated;
+}
+
+/* ===== Cursor glow follow ===== */
+.cursor-glow {
+  position: fixed;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+/* Per-slide radial spotlight that fades in on .visible */
+.slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at var(--spot-x, 25%) var(--spot-y, 30%), rgba(99, 102, 241, 0.08), transparent 55%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s var(--ease);
+  z-index: 0;
+}
+.slide.visible::after { opacity: 1; }
+.slide:nth-child(2n)::after { --spot-x: 75%; --spot-y: 70%; }
+.slide:nth-child(3n)::after { --spot-x: 50%; --spot-y: 85%; }
+
+/* ================================================================
+   TYPOGRAPHY · TAM brand (Manrope display, Open Sans body)
+   ================================================================ */
+h1.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--title-size);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text-paper);
+  max-width: 14ch;
+}
+
+h1.display em,
+h1.display .italic {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* Animated orange highlight sweep — triggers on slide enter */
+h1.display .hl, .hl {
+  background: linear-gradient(90deg, var(--accent-hl) 0%, var(--accent-hl-strong) 100%);
+  background-size: 0% 70%;
+  background-repeat: no-repeat;
+  background-position: 0 82%;
+  padding: 0 8px;
+  animation: hlSweep 5s ease infinite;
+  animation-play-state: paused;
+}
+.slide.visible .hl { animation-play-state: running; }
+@keyframes hlSweep {
+  0% { background-size: 0% 70%; }
+  40%, 80% { background-size: 100% 70%; }
+  100% { background-size: 0% 70%; }
+}
+
+.hl-static {
+  background: linear-gradient(90deg, transparent 0%, var(--accent-hl) 10%, var(--accent-hl) 90%, transparent 100%);
+  background-size: 100% 65%;
+  background-repeat: no-repeat;
+  background-position: 0 85%;
+  padding: 0 6px;
+}
+
+/* Teal variant for evergreen/success semantics */
+.hl.teal-hl {
+  background: linear-gradient(90deg, rgba(80, 227, 194, 0.22) 0%, rgba(80, 227, 194, 0.5) 100%);
+}
+h1.display .teal {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-style: normal;
+  color: var(--teal);
+  text-shadow: 0 0 24px var(--teal-glow);
+}
+
+h2 {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--h2-size);
+  line-height: 1.55;
+  color: var(--text-dim);
+  letter-spacing: 0;
+  max-width: 50ch;
+  margin-inline: auto;
+}
+
+h3.kicker {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--h3-size);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  margin-bottom: clamp(1.2rem, 2vw, 2rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+h3.kicker::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+}
+
+h3.section-label {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--h3-size);
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  margin-bottom: clamp(1rem, 1.6vw, 1.5rem);
+}
+
+strong, .accent { color: var(--accent); font-weight: inherit; }
+
+/* ================================================================
+   SLIDE VARIANTS
+   ================================================================ */
+.lead .slide-content {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.lead h1.display { max-width: 16ch; }
+.lead h2 { margin-top: clamp(1.2rem, 2.4vw, 2rem); }
+
+/* Dark hero variant — title slide only.
+   Per CLAUDE.md: "Dark only for footers/heroes when intentional."
+   The real TAM logo (logo-on-black.svg) is designed for a black backdrop;
+   wrapping the title slide in a midnight gradient lets the inline SVG land
+   correctly without recoloring its native black rect. Days 02+ stay light. */
+.slide.lead.dark-hero {
+  background: linear-gradient(180deg, #0F172A 0%, #1E1B4B 100%);
+  isolation: isolate; /* clip body::before glow + hex bg behind this slide */
+}
+.slide.lead.dark-hero h1.display { color: #F8FAFC; }
+.slide.lead.dark-hero h2 { color: #C7D2FE; }
+.slide.lead.dark-hero h3.kicker { color: #818CF8; }
+.slide.lead.dark-hero h3.kicker::before { background: #818CF8; }
+.slide.lead.dark-hero .brand-block {
+  border-top-color: rgba(199, 210, 254, 0.18);
+}
+.slide.lead.dark-hero .brand-block .title-line { color: #C7D2FE; }
+.slide.lead.dark-hero .brand-block .title-line strong { color: #818CF8; }
+.slide.lead.dark-hero .brand-block .title-line .product { color: #F8FAFC; }
+.slide.lead.dark-hero .brand-block .tag-line { color: rgba(199, 210, 254, 0.78); }
+.slide.lead.dark-hero h1.display .hl-static {
+  background: linear-gradient(90deg, transparent 0%, rgba(249, 112, 102, 0.34) 10%, rgba(249, 112, 102, 0.34) 90%, transparent 100%);
+}
+.slide.lead.dark-hero::after {
+  background: radial-gradient(ellipse at 50% 30%, rgba(99, 102, 241, 0.22), transparent 60%);
+}
+
+/* Iso slide — two column: text + 3D scene */
+.iso-slide .slide-content {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(24px, 4vw, 80px);
+  align-items: center;
+  padding: clamp(2rem, 5vw, 5rem) var(--slide-padding);
+}
+@media (max-width: 960px) {
+  .iso-slide .slide-content { grid-template-columns: 1fr; gap: 32px; }
+}
+.iso-text h2.scene-title {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(2rem, 4.6vw, 4.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-paper);
+  max-width: 16ch;
+  margin: 0 0 clamp(1rem, 1.8vw, 1.4rem);
+}
+.iso-text h2.scene-title em { font-family: var(--font-hand); font-weight: 700; font-style: normal; color: var(--accent); }
+.iso-text .body-text {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 50ch;
+}
+.iso-text .fine-list {
+  list-style: none;
+  margin-top: clamp(1.2rem, 2vw, 1.8rem);
+  border-top: 1px solid var(--border);
+}
+.iso-text .fine-list li {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-dim);
+}
+.iso-text .fine-list li .k { color: var(--muted); }
+.iso-text .fine-list li .v { color: var(--accent); font-weight: 600; }
+.iso-text .fine-list li.teal .v { color: var(--teal); }
+
+.iso-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 560px;
+  max-height: 60vh;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================================================================
+   COMPONENTS · reusable
+   ================================================================ */
+.bullets {
+  list-style: none;
+  margin: clamp(1.6rem, 3vw, 2.5rem) 0;
+  max-width: min(85vw, 680px);
+}
+.bullets li {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin-bottom: clamp(0.8rem, 1.6vw, 1.2rem);
+  padding-left: clamp(1.6rem, 2.5vw, 2.2rem);
+  position: relative;
+}
+.bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: clamp(14px, 1.4vw, 20px);
+  height: 1px;
+  background: var(--accent);
+}
+.bullets li strong {
+  color: var(--accent);
+  font-weight: 700;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.logos-row {
+  display: flex;
+  gap: clamp(0.8rem, 1.6vw, 1.4rem);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  max-width: 90vw;
+}
+.logo-pill {
+  padding: clamp(0.7rem, 1.2vw, 1rem) clamp(1.2rem, 2vw, 1.6rem);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(0.78rem, 1vw, 0.95rem);
+  color: var(--text-dim);
+  background: var(--bg-elev);
+  letter-spacing: 0.04em;
+  transition: all 0.3s var(--ease);
+  box-shadow: var(--shadow-card-rest);
+}
+.logo-pill:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.fine {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* ================================================================
+   REVEAL ANIMATIONS
+   ================================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  filter: blur(4px);
+  transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease), filter var(--duration) var(--ease);
+}
+.slide.visible .reveal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+.slide.visible .reveal:nth-child(1) { transition-delay: 0.1s; }
+.slide.visible .reveal:nth-child(2) { transition-delay: 0.25s; }
+.slide.visible .reveal:nth-child(3) { transition-delay: 0.4s; }
+.slide.visible .reveal:nth-child(4) { transition-delay: 0.55s; }
+.slide.visible .reveal:nth-child(5) { transition-delay: 0.7s; }
+.slide.visible h1.reveal { transition-duration: 1.2s; }
+
+.bullets li {
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.slide.visible .bullets li { opacity: 1; transform: translateX(0); }
+.slide.visible .bullets li:nth-child(1) { transition-delay: 0.35s; }
+.slide.visible .bullets li:nth-child(2) { transition-delay: 0.48s; }
+.slide.visible .bullets li:nth-child(3) { transition-delay: 0.61s; }
+.slide.visible .bullets li:nth-child(4) { transition-delay: 0.74s; }
+
+.logos-row .logo-pill {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: all 0.55s var(--ease);
+}
+.slide.visible .logos-row .logo-pill { opacity: 1; transform: translateY(0); }
+.slide.visible .logos-row .logo-pill:nth-child(1) { transition-delay: 0.25s; }
+.slide.visible .logos-row .logo-pill:nth-child(2) { transition-delay: 0.34s; }
+.slide.visible .logos-row .logo-pill:nth-child(3) { transition-delay: 0.43s; }
+.slide.visible .logos-row .logo-pill:nth-child(4) { transition-delay: 0.52s; }
+.slide.visible .logos-row .logo-pill:nth-child(5) { transition-delay: 0.61s; }
+.slide.visible .logos-row .logo-pill:nth-child(6) { transition-delay: 0.7s; }
+
+/* ================================================================
+   FIXED UI · progress / nav / watermark / brand
+   ================================================================ */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #818CF8);
+  z-index: 1000;
+  transition: width 0.3s var(--ease);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.nav-dots {
+  position: fixed;
+  right: clamp(12px, 1.8vw, 28px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(7px, 0.8vw, 12px);
+  z-index: 1000;
+}
+.nav-dots button {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--border-hover);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s var(--ease);
+}
+.nav-dots button:hover { border-color: var(--accent); transform: scale(1.3); }
+.nav-dots button.active { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+
+.slide-number {
+  position: fixed;
+  bottom: clamp(14px, 2vw, 26px);
+  right: clamp(18px, 2.4vw, 32px);
+  z-index: 1000;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+}
+.slide-number .curr { color: var(--accent); font-weight: 700; }
+
+/* ===== Brand watermark · customize the label + svg below ===== */
+.watermark {
+  position: fixed;
+  bottom: clamp(14px, 2vw, 26px);
+  left: clamp(18px, 2.4vw, 32px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.watermark svg { flex-shrink: 0; width: 28px; height: 28px; display: block; }
+.watermark .bar { width: 14px; height: 1px; background: var(--border-hover); }
+
+/* ===== Prev/Next arrows · bottom center ===== */
+.nav-arrows {
+  position: fixed;
+  bottom: clamp(14px, 2vw, 26px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+.nav-arrow {
+  width: 42px; height: 42px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 100px;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s var(--ease);
+  padding: 0;
+  box-shadow: var(--shadow-card-rest);
+}
+.nav-arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 16px var(--accent-glow);
+  transform: scale(1.08);
+}
+.nav-arrow:active { transform: scale(0.95); }
+.nav-arrow svg { width: 18px; height: 18px; }
+.nav-arrow:disabled { opacity: 0.25; cursor: not-allowed; }
+.nav-arrow:disabled:hover { border-color: var(--border); color: var(--text-dim); box-shadow: none; transform: none; }
+
+/* Brand block — title slide. Real TAM SVG logo embedded inline. */
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.6vw, 18px);
+  margin-top: clamp(1.8rem, 3vw, 2.6rem);
+  padding-top: clamp(1.4rem, 2.4vw, 2rem);
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.8s var(--ease) 0.9s, transform 0.8s var(--ease) 0.9s;
+}
+.slide.visible .brand-block { opacity: 1; transform: translateY(0); }
+.brand-block .tam-logo {
+  flex-shrink: 0;
+  height: clamp(72px, 8vw, 96px);
+  width: auto;
+  display: block;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.32);
+}
+.brand-block .text { text-align: left; line-height: 1.3; }
+.brand-block .title-line {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+  color: var(--text-dim);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.brand-block .title-line strong {
+  font-weight: 700;
+  color: var(--accent);
+}
+.brand-block .title-line .product {
+  color: var(--text-paper);
+  font-weight: 600;
+  margin-left: 6px;
+}
+.brand-block .tag-line {
+  font-family: var(--font-hand);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  color: var(--text-dim);
+  letter-spacing: 0;
+  text-transform: none;
+  margin-top: 4px;
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-height: 700px) {
+  :root { --slide-padding: clamp(1rem, 4vw, 3rem); --title-size: clamp(1.9rem, 6vw, 4.4rem); }
+}
+@media (max-height: 600px) {
+  :root { --title-size: clamp(1.6rem, 5vw, 3.2rem); --body-size: clamp(0.8rem, 1.2vw, 1rem); }
+  .nav-dots { display: none; }
+}
+@media (max-width: 800px) {
+  .logos-row { gap: 0.5rem; }
+  .nav-dots { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ================================================================
+   PER-SLIDE GRAPHIC STYLES · M1
+   ================================================================ */
+
+/* ─── shared iso-cube primitives ─── */
+.iso-cube {
+  position: absolute;
+  width: 50px; height: 50px;
+  transform-style: preserve-3d;
+  transform: rotateX(54.7deg) rotateZ(45deg);
+}
+.iso-cube .face {
+  position: absolute;
+  width: 50px; height: 50px;
+}
+.iso-cube .face.top { transform: translateZ(25px); }
+.iso-cube .face.left { transform: rotateX(90deg) translateZ(25px); }
+.iso-cube .face.right { transform: rotateX(-90deg) translateZ(25px); }
+.iso-cube.orange .face.top { background: #818CF8; }
+.iso-cube.orange .face.left { background: #6366F1; }
+.iso-cube.orange .face.right { background: #4338CA; }
+.iso-cube.gray .face.top { background: #C7D2FE; }
+.iso-cube.gray .face.left { background: #A5B4FC; }
+.iso-cube.gray .face.right { background: #818CF8; }
+
+/* ─── Scene 01 · Stacked Tower (ref: iso-grid card-01) ─── */
+.scene-tower {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at 50% 40%, rgba(199, 210, 254, 0.55) 0%, var(--bg) 70%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card-rest);
+}
+.scene-tower .iso-cube { left: calc(50% - 25px); top: 50%; }
+.scene-tower .iso-cube.t1 { transform: translate(0, 60px) rotateX(54.7deg) rotateZ(45deg); }
+.scene-tower .iso-cube.t2 { transform: translate(0, 30px) rotateX(54.7deg) rotateZ(45deg); }
+.scene-tower .iso-cube.t3 { transform: translate(0, 0) rotateX(54.7deg) rotateZ(45deg); }
+.scene-tower .iso-cube.t4 { animation: towerLift 3.6s ease infinite; }
+@keyframes towerLift {
+  0%, 100% { transform: translate(0, -30px) rotateX(54.7deg) rotateZ(45deg); }
+  50% { transform: translate(0, -55px) rotateX(54.7deg) rotateZ(45deg); }
+}
+.scene-tower .shadow {
+  position: absolute;
+  bottom: 48px; left: 50%; transform: translateX(-50%);
+  width: 70px; height: 10px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(30, 27, 75, 0.18), transparent 70%);
+  filter: blur(4px);
+  animation: towerShadow 3.6s ease infinite;
+}
+@keyframes towerShadow {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(.7); opacity: .7; }
+}
+.scene-tower .tower-labels {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column;
+  gap: 4px; padding-left: 180px;
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.scene-tower .tower-labels span { white-space: nowrap; padding: 2px 0; }
+.scene-tower .tower-labels span.accent { color: var(--accent); }
+
+/* ─── Scene 02 · Orbiting Rings (ref: iso-machine card-06) ─── */
+.scene-orbit {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, rgba(199, 210, 254, 0.45) 0%, var(--bg) 70%);
+  perspective: 600px;
+  transform-style: preserve-3d;
+  box-shadow: var(--shadow-card-rest);
+}
+.scene-orbit .orb-core {
+  position: relative;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #818CF8, #4338CA);
+  box-shadow: 0 0 24px var(--accent-glow);
+  z-index: 4;
+}
+.scene-orbit .ring {
+  position: absolute;
+  left: 50%; top: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  transform-style: preserve-3d;
+}
+.scene-orbit .ring.r1 {
+  width: 100px; height: 100px;
+  margin: -50px 0 0 -50px;
+  transform: rotateX(70deg);
+  animation: ringSpin1 8s linear infinite;
+  border-color: rgba(99, 102, 241, 0.5);
+}
+.scene-orbit .ring.r2 {
+  width: 150px; height: 150px;
+  margin: -75px 0 0 -75px;
+  transform: rotateX(70deg) rotateY(45deg);
+  animation: ringSpin2 12s linear infinite;
+  border-color: rgba(139, 92, 246, 0.4);
+}
+.scene-orbit .ring.r3 {
+  width: 200px; height: 200px;
+  margin: -100px 0 0 -100px;
+  transform: rotateX(70deg) rotateY(-45deg);
+  animation: ringSpin1 16s linear infinite;
+  border-color: rgba(45, 212, 191, 0.4);
+}
+@keyframes ringSpin1 { to { transform: rotateX(70deg) rotateZ(360deg); } }
+@keyframes ringSpin2 { to { transform: rotateX(70deg) rotateY(45deg) rotateZ(360deg); } }
+.scene-orbit .sat {
+  position: absolute;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  top: -5px;
+  left: calc(50% - 5px);
+}
+.scene-orbit .ring-label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.scene-orbit .rl-observe { top: 12%; left: 50%; transform: translateX(-50%); color: var(--accent); }
+.scene-orbit .rl-think { top: 50%; right: 8%; transform: translateY(-50%); }
+.scene-orbit .rl-act { bottom: 12%; left: 50%; transform: translateX(-50%); }
+.scene-orbit .rl-repeat { top: 50%; left: 8%; transform: translateY(-50%); }
+
+/* ─── Scene 03 · Hub + Spoke (ref: feature-grid card-05) ─── */
+.scene-hub {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, rgba(199, 210, 254, 0.45) 0%, var(--bg) 70%);
+  box-shadow: var(--shadow-card-rest);
+}
+.scene-hub svg.lines {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.scene-hub .hub-line {
+  stroke: rgba(99, 102, 241, 0.30);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+  fill: none;
+  animation: hubFlow 2.8s linear infinite;
+}
+.scene-hub .hub-line:nth-child(1) { animation-delay: 0s; }
+.scene-hub .hub-line:nth-child(2) { animation-delay: 0.3s; }
+.scene-hub .hub-line:nth-child(3) { animation-delay: 0.6s; }
+.scene-hub .hub-line:nth-child(4) { animation-delay: 0.9s; }
+.scene-hub .hub-line:nth-child(5) { animation-delay: 1.2s; }
+.scene-hub .hub-line:nth-child(6) { animation-delay: 1.5s; }
+@keyframes hubFlow {
+  0%, 100% { stroke-dashoffset: 14; stroke: rgba(99, 102, 241, 0.25); opacity: 0.6; }
+  50% { stroke-dashoffset: 0; stroke: rgba(99, 102, 241, 0.85); opacity: 1; }
+}
+.scene-hub .hub-center {
+  position: relative;
+  width: 54px; height: 54px;
+  border-radius: 12px;
+  background: var(--tam-gradient-brand);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 3;
+  box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.16), 0 0 40px rgba(99, 102, 241, 0.5);
+  animation: hubPulse 2.8s ease infinite;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #FFFFFF;
+}
+@keyframes hubPulse {
+  0%, 100% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.16), 0 0 40px rgba(99, 102, 241, 0.5); }
+  50% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0.24), 0 0 56px rgba(99, 102, 241, 0.65); }
+}
+.scene-hub .hub-node {
+  position: absolute;
+  padding: 8px 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: all 0.4s;
+  white-space: nowrap;
+  box-shadow: var(--shadow-card-rest);
+}
+.scene-hub .hub-node.lit {
+  border-color: rgba(99, 102, 241, 0.55);
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.34);
+}
+.scene-hub .hub-node.p1 { left: 10%; top: 18%; }
+.scene-hub .hub-node.p2 { right: 10%; top: 18%; }
+.scene-hub .hub-node.p3 { left: 3%; top: 50%; transform: translateY(-50%); }
+.scene-hub .hub-node.p4 { right: 3%; top: 50%; transform: translateY(-50%); }
+.scene-hub .hub-node.p5 { left: 10%; bottom: 18%; }
+.scene-hub .hub-node.p6 { right: 10%; bottom: 18%; }
+
+/* ─── Subtle per-slide motion · every slide gets at least one dynamic element ─── */
+
+/* Title brand mark · gentle float */
+.brand-block .tam-logo {
+  animation: brandFloat 4s ease-in-out infinite;
+}
+@keyframes brandFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Lead slide accent words · subtle glow pulse */
+.slide.lead.visible h1.display em,
+.slide.lead.visible h1.display .italic,
+.slide.lead.visible h1.display .teal {
+  animation: accentGlow 3.5s ease-in-out infinite;
+}
+@keyframes accentGlow {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 22px var(--accent-glow); }
+}
+.slide.lead.visible h1.display .teal {
+  animation-name: tealGlow;
+}
+@keyframes tealGlow {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 24px var(--teal-glow); }
+}
+
+/* Logo pills · subtle float stagger */
+.logos-row .logo-pill {
+  animation-name: pillFloat;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: calc(var(--i, 0) * 0.4s);
+}
+@keyframes pillFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Bullets in content slides · subtle pen-strike on marker */
+.bullets li::before {
+  animation: markerPulse 3s ease-in-out infinite;
+}
+@keyframes markerPulse {
+  0%, 100% { opacity: 0.55; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(1.35); }
+}
+
+/* ─── CLAUDE.md live mock (slide 05) ─── */
+.claude-mock {
+  width: 100%;
+  max-width: 420px;
+  margin: clamp(1.2rem, 2vw, 1.6rem) auto 0;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: left;
+  position: relative;
+}
+.claude-mock::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scanBar 2.4s linear infinite;
+}
+@keyframes scanBar {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.claude-mock .cm-head {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.claude-mock .cm-head .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dotBlink 1.4s ease-in-out infinite;
+}
+@keyframes dotBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.claude-mock .cm-row {
+  display: flex; gap: 10px; padding: 5px 0;
+  color: var(--text-dim);
+}
+.claude-mock .cm-row .k {
+  color: var(--accent);
+  font-weight: 600;
+  min-width: 68px;
+}
+.claude-mock .cm-row .v { color: var(--text-paper); }
+.claude-mock .cm-row .cur {
+  display: inline-block;
+  width: 1px; height: 10px;
+  background: var(--accent);
+  margin-left: 2px;
+  animation: curBlink 0.6s step-end infinite;
+}
+@keyframes curBlink { 50% { opacity: 0; } }
+
+/* ─── Self-modifying animation (slide 10) ─── */
+.self-mod-stage {
+  position: relative;
+  width: 300px; height: 180px;
+  margin: clamp(1.2rem, 2vw, 1.8rem) auto 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.self-mod-stage .file-box {
+  width: 140px; height: 130px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+.self-mod-stage .file-box .title {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.self-mod-stage .file-box .line {
+  height: 3px;
+  background: var(--border-hover);
+  border-radius: 2px;
+  margin-bottom: 6px;
+  opacity: 0.5;
+}
+.self-mod-stage .file-box .line.w1 { width: 80%; }
+.self-mod-stage .file-box .line.w2 { width: 60%; }
+.self-mod-stage .file-box .line.w3 { width: 75%; }
+.self-mod-stage .file-box .line.new {
+  background: var(--accent);
+  opacity: 0;
+  animation: newRule 3.5s ease infinite;
+}
+@keyframes newRule {
+  0%, 40% { opacity: 0; width: 0%; }
+  55% { opacity: 1; width: 85%; }
+  85% { opacity: 1; width: 85%; }
+  100% { opacity: 0; width: 85%; }
+}
+.self-mod-stage svg.loop {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+}
+.self-mod-stage svg.loop path {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 5 5;
+  animation: loopDraw 3.5s linear infinite;
+}
+@keyframes loopDraw {
+  to { stroke-dashoffset: -40; }
+}
+
+/* ─── Agent pixel lineup (for slides that introduce the team) ─── */
+.agent-lineup {
+  display: flex;
+  gap: clamp(14px, 1.6vw, 22px);
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+}
+.agent-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.3s var(--ease);
+}
+.agent-badge:hover { transform: translateY(-4px); }
+.agent-badge canvas { image-rendering: pixelated; }
+.agent-badge .name {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-paper);
+}
+.agent-badge .role {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Orbit active-step cue (for The Loop scene) */
+.scene-orbit .orb-core {
+  animation: coreBreathe 2s ease-in-out infinite;
+}
+@keyframes coreBreathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 24px var(--accent-glow); }
+  50% { transform: scale(1.15); box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+}
+
+/* ================================================================
+   DAY-1 SPECIFIC GRAPHICS · The Self-Running Business System,
+   Brain anatomy, the Pyramid, the 12 Questions, Hire Memo card.
+   ================================================================ */
+
+/* ─── 3-beat editorial cards · Hire · Run · Breathe ─── */
+.three-beat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 2.6vw, 36px);
+  margin-top: clamp(2.4rem, 4vw, 3.2rem);
+  max-width: 1000px;
+  margin-left: auto; margin-right: auto;
+  width: 100%;
+}
+.beat-card {
+  --bcol: var(--accent);
+  --bcol-soft: rgba(99, 102, 241, 0.10);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: clamp(1.6rem, 2.4vw, 2.2rem) clamp(1.4rem, 2vw, 1.8rem);
+  background: var(--bg-elev);
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+  box-shadow: var(--shadow-card-rest);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.beat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(99, 102, 241, 0.14);
+  border-color: rgba(99, 102, 241, 0.28);
+}
+.beat-card .beat-icon {
+  width: clamp(56px, 6vw, 72px);
+  height: clamp(56px, 6vw, 72px);
+  border-radius: 18px;
+  background: var(--bcol-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: clamp(1rem, 1.6vw, 1.4rem);
+  color: var(--bcol);
+}
+.beat-card .beat-icon svg {
+  width: 60%; height: 60%;
+}
+.beat-card .beat-num {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 0.85vw, 0.78rem);
+  letter-spacing: 0.22em;
+  color: var(--bcol);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.beat-card .beat-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: normal;
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  color: var(--text-paper);
+  margin-bottom: 4px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.beat-card .beat-verb {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 0.85vw, 0.78rem);
+  color: var(--bcol);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: clamp(0.7rem, 1.2vw, 1rem);
+}
+.beat-card .beat-line {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.beat-card.b1 { --bcol: var(--accent); --bcol-soft: rgba(99, 102, 241, 0.10); }
+.beat-card.b2 { --bcol: var(--teal); --bcol-soft: rgba(45, 212, 191, 0.12); }
+.beat-card.b3 { --bcol: var(--amber); --bcol-soft: rgba(249, 112, 102, 0.12); }
+.beat-card .pulse {
+  position: absolute;
+  top: 18px; right: 18px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--bcol);
+  box-shadow: 0 0 0 4px var(--bcol-soft);
+  animation: dotBlink 1.6s ease-in-out infinite;
+}
+
+/* Optional pull quote under the row (Kalam handwritten accent) */
+.three-beat-quote {
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  color: var(--accent);
+  text-align: center;
+  margin-top: clamp(1.2rem, 2vw, 1.8rem);
+  letter-spacing: 0;
+}
+
+@media (max-width: 860px) {
+  .three-beat-row { grid-template-columns: 1fr; gap: 14px; max-width: 480px; }
+}
+
+/* ─── Pyramid (Commander → Chief of Staff → Specialists) ─── */
+.scene-pyramid {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 30%, rgba(199, 210, 254, 0.45) 0%, var(--bg) 70%);
+  padding: 30px 20px;
+  gap: 14px;
+  box-shadow: var(--shadow-card-rest);
+}
+.scene-pyramid .pyramid-tier {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-paper);
+  background: rgba(99, 102, 241, 0.07);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  position: relative;
+}
+.scene-pyramid .pyramid-tier .role-name {
+  color: var(--text-paper);
+  font-weight: 600;
+}
+.scene-pyramid .pyramid-tier .role-tag {
+  font-style: normal;
+  font-family: var(--font-body);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-dim);
+  font-size: 12px;
+}
+.scene-pyramid .tier-1 { width: 38%; background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.35); }
+.scene-pyramid .tier-1 .role-name { color: var(--accent); }
+.scene-pyramid .tier-2 {
+  width: 56%;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 24px rgba(99, 102, 241, 0.35);
+  animation: pyramidPulse 2.6s ease-in-out infinite;
+}
+.scene-pyramid .tier-2 .role-name { color: var(--accent); }
+.scene-pyramid .tier-3 { width: 78%; gap: 16px; flex-wrap: wrap; }
+.scene-pyramid .tier-3 .spec-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border-radius: 100px;
+  border: 1px dashed var(--border-hover);
+  background: rgba(99, 102, 241, 0.05);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.scene-pyramid .pyramid-arrow {
+  width: 1px; height: 14px;
+  background: linear-gradient(180deg, var(--accent), transparent);
+}
+@keyframes pyramidPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 0 36px rgba(99, 102, 241, 0.55); }
+}
+
+/* ─── Brain anatomy (file tree) ─── */
+.scene-brain {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 30%, rgba(199, 210, 254, 0.45) 0%, var(--bg) 70%);
+  padding: 24px;
+  box-shadow: var(--shadow-card-rest);
+}
+.scene-brain .file-tree {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.scene-brain .ft-root {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.scene-brain .ft-row { display: block; }
+.scene-brain .ft-meta { color: var(--violet); }
+.scene-brain .ft-folder { color: var(--text-paper); }
+.scene-brain .ft-key { color: var(--accent); }
+.scene-brain .ft-comment {
+  color: var(--muted);
+  font-size: 10px;
+  margin-left: 10px;
+  font-style: italic;
+}
+.scene-brain .ft-row::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 8px;
+  opacity: 0.4;
+  vertical-align: middle;
+}
+.scene-brain .ft-row.lit::before {
+  opacity: 1;
+  box-shadow: 0 0 8px var(--accent-glow);
+  animation: dotBlink 1.4s ease-in-out infinite;
+}
+
+/* ─── 12-Question grid ─── */
+.q-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 720px;
+  margin: clamp(1.6rem, 3vw, 2.5rem) auto 0;
+}
+.q-tile {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 12px;
+  background: var(--bg-elev);
+  text-align: left;
+  position: relative;
+}
+.q-tile .q-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.q-tile .q-text {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--text-paper);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+.q-tile.bucket-business { border-top: 2px solid var(--accent); }
+.q-tile.bucket-voice { border-top: 2px solid var(--teal); }
+.q-tile.bucket-diag { border-top: 2px solid var(--violet); }
+.q-tile.bucket-bound { border-top: 2px solid var(--amber); }
+.q-tile.lit {
+  border-color: rgba(99, 102, 241, 0.55);
+  background: rgba(99, 102, 241, 0.06);
+  animation: tilePulse 2.4s ease-in-out infinite;
+}
+@keyframes tilePulse {
+  0%, 100% { box-shadow: 0 0 0 transparent; }
+  50% { box-shadow: 0 0 14px rgba(99, 102, 241, 0.35); }
+}
+
+.q-bucket-legend {
+  display: flex; gap: 14px; justify-content: center;
+  margin-top: clamp(0.8rem, 1.4vw, 1.2rem);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.q-bucket-legend span { display: inline-flex; align-items: center; gap: 6px; color: var(--text-dim); }
+.q-bucket-legend span::before {
+  content: ''; display: inline-block;
+  width: 8px; height: 8px; border-radius: 2px;
+}
+.q-bucket-legend .lg-business::before { background: var(--accent); }
+.q-bucket-legend .lg-voice::before { background: var(--teal); }
+.q-bucket-legend .lg-diag::before { background: var(--violet); }
+.q-bucket-legend .lg-bound::before { background: var(--amber); }
+
+/* ─── Toni Q&A row (verbatim diagnostic answers) ─── */
+.toni-qa {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  max-width: 880px;
+  margin: clamp(1.2rem, 2.4vw, 2rem) auto 0;
+  align-items: baseline;
+  font-family: var(--font-display);
+}
+.toni-qa .qa-q {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.toni-qa .qa-a {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+  color: var(--text-paper);
+  line-height: 1.5;
+}
+
+/* ─── Hire Recommendations memo (Toni's example) ─── */
+.hire-memo {
+  max-width: 720px;
+  margin: clamp(1rem, 2vw, 1.6rem) auto 0;
+  background: linear-gradient(180deg, rgba(45, 212, 191, 0.07), rgba(99, 102, 241, 0.06));
+  border: 1px solid rgba(45, 212, 191, 0.5);
+  border-radius: 14px;
+  padding: 22px 26px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.hire-memo::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  animation: scanBar 3.5s linear infinite;
+}
+.hire-memo .memo-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hire-memo .memo-head .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal);
+  animation: dotBlink 1.4s ease-in-out infinite;
+}
+.hire-memo .memo-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: var(--text-paper);
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+}
+.hire-memo .memo-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+.hire-memo .memo-row .badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  background: rgba(99, 102, 241, 0.18);
+  color: var(--accent);
+  padding: 3px 8px;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+.hire-memo .memo-row .role {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+  color: var(--text-paper);
+  letter-spacing: -0.01em;
+}
+.hire-memo .memo-row .why {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.4;
+  text-align: left;
+}
+.hire-memo .memo-row .order {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--teal);
+  letter-spacing: 0.18em;
+}
+
+/* ─── Q→Page mapping ─── */
+.qmap-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr;
+  gap: 10px 16px;
+  align-items: center;
+  max-width: 760px;
+  margin: clamp(1.2rem, 2.2vw, 1.8rem) auto 0;
+}
+.qmap-row .q-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(99, 102, 241, 0.14);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+.qmap-row .q-label {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-paper);
+}
+.qmap-row .q-arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  animation: arrowPulse 2.2s ease-in-out infinite;
+}
+@keyframes arrowPulse {
+  0%, 100% { opacity: 0.5; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(3px); }
+}
+.qmap-row .q-page {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 0.06em;
+}
+
+/* ─── Code block (install command) ─── */
+.code-block {
+  background: var(--tam-midnight, #0F172A);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin: clamp(1.4rem, 2.4vw, 2rem) auto 0;
+  max-width: 900px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1.05vw, 1rem);
+  color: #F8FAFC;
+  line-height: 1.6;
+  overflow: auto;
+  text-align: left;
+  position: relative;
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.18);
+}
+.code-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scanBar 4s linear infinite;
+}
+.code-block .cb-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.code-block .cb-prompt { color: var(--accent); user-select: none; }
+.code-block .cb-cmd { color: #F8FAFC; }
+.code-block .cb-flag { color: var(--teal); }
+.code-block .cb-url { color: #818CF8; word-break: break-all; }
+
+/* ─── Two-tile setup graphic ─── */
+.setup-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  max-width: 720px;
+  margin: clamp(1.6rem, 3vw, 2.4rem) auto 0;
+}
+.setup-tile {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  background: var(--bg-elev);
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.setup-tile .tile-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.setup-tile .tile-head {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  color: var(--text-paper);
+  margin: 6px 0 10px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.setup-tile .tile-line {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.setup-tile .tile-time {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--teal);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ─── Day-1 deliverable card ─── */
+.deliverable-card {
+  max-width: 760px;
+  margin: clamp(1.4rem, 2.6vw, 2rem) auto 0;
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.08), transparent);
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  border-radius: 16px;
+  padding: 22px 28px;
+  text-align: left;
+  position: relative;
+}
+.deliverable-card .deliv-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.deliverable-card .deliv-line {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.15rem, 1.7vw, 1.6rem);
+  color: var(--text-paper);
+  line-height: 1.4;
+}
+
+/* ─── Numbered hands-on steps ─── */
+.steps-list {
+  list-style: none;
+  max-width: 780px;
+  margin: clamp(1.2rem, 2.2vw, 2rem) auto 0;
+  counter-reset: step-counter;
+}
+.steps-list li {
+  counter-increment: step-counter;
+  position: relative;
+  padding: 14px 18px 14px 56px;
+  border-left: 1px solid var(--border);
+  margin-bottom: 8px;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.steps-list li::before {
+  content: counter(step-counter, decimal-leading-zero);
+  position: absolute;
+  left: -1px;
+  top: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  background: var(--bg);
+  padding: 0 12px 0 0;
+  width: 50px;
+}
+.steps-list li strong {
+  color: var(--text-paper);
+  font-style: normal;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+.steps-list li code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-style: normal;
+  background: rgba(99, 102, 241, 0.14);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+/* ─── Lesson chapter intro slide divider style ─── */
+.lesson-marker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.lesson-marker .day {
+  color: var(--accent);
+  font-weight: 600;
+}
+.lesson-marker .pipe {
+  color: var(--muted);
+  margin: 0 10px;
+}
+.lesson-marker .duration {
+  color: var(--teal);
+}
+
+/* ─── CTA pause-and-do block ─── */
+.cta-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: clamp(1.2rem, 2.2vw, 1.8rem);
+  padding: 14px 22px;
+  border: 1px solid rgba(249, 112, 102, 0.45);
+  background: rgba(249, 112, 102, 0.06);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--amber);
+  text-transform: uppercase;
+}
+.cta-block .cta-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 10px rgba(249, 112, 102, 0.6);
+  animation: dotBlink 1.4s ease-in-out infinite;
+}
+
+/* ─── Bigger top-row stat trio (lesson opener context) ─── */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+  max-width: 760px;
+  margin-left: auto; margin-right: auto;
+}
+.stat-row .stat {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+  background: var(--bg-elev);
+  text-align: left;
+}
+.stat-row .stat .num {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  color: var(--accent);
+  font-weight: 800;
+  font-style: normal;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.stat-row .stat .lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+.stat-row .stat:nth-child(2) .num { color: var(--teal); }
+.stat-row .stat:nth-child(3) .num { color: var(--amber); }
+
+/* ─── Inline agent badge (pixel icon + name) for body copy ─── */
+.inline-agent {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 6px;
+  border-radius: 100px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-paper);
+  text-transform: uppercase;
+}
+.inline-agent canvas { image-rendering: pixelated; }
+
+/* ─── Wikilink demo ─── */
+.wikilink-demo {
+  display: inline-block;
+  margin-top: clamp(1.2rem, 2vw, 1.8rem);
+  font-family: var(--font-mono);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 22px;
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+  color: var(--text-paper);
+}
+.wikilink-demo .wl-bracket { color: var(--text-dim); }
+.wikilink-demo .wl-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.wikilink-demo .wl-arrow {
+  color: var(--text-dim);
+  margin: 0 14px;
+}
+.wikilink-demo .wl-target {
+  color: var(--teal);
+}
+
+/* ================================================================
+   DAY-2 SPECIFIC GRAPHICS · /hire-employee pipeline,
+   clarifying-question dialog, content-designer file tree,
+   recipe list, Toni proof-of-voice quote.
+   ================================================================ */
+
+/* ─── /hire-employee 4-step pipeline ─── */
+.scene-pipeline {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, rgba(199, 210, 254, 0.45) 0%, var(--bg) 70%);
+  padding: 18px;
+  box-shadow: var(--shadow-card-rest);
+}
+.scene-pipeline .pipe-rail {
+  position: relative;
+  width: 100%;
+  display: flex; flex-direction: column;
+  gap: 10px;
+}
+.scene-pipeline .pipe-step {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(99, 102, 241, 0.05);
+  position: relative;
+  transition: all 0.4s var(--ease);
+}
+.scene-pipeline .pipe-step.active {
+  border-color: rgba(99, 102, 241, 0.6);
+  background: rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.3);
+}
+.scene-pipeline .pipe-step .step-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  background: rgba(99, 102, 241, 0.16);
+  border-radius: 6px;
+  padding: 4px 0;
+  text-align: center;
+}
+.scene-pipeline .pipe-step .step-text {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-paper);
+  line-height: 1.4;
+}
+.scene-pipeline .pipe-step .step-text .small {
+  display: block;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.scene-pipeline .pipe-arrow {
+  align-self: center;
+  width: 1px;
+  height: 8px;
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.5), transparent);
+  margin-left: 18px;
+}
+@keyframes pipeMarch {
+  0%, 100% { box-shadow: 0 0 0 transparent; transform: scale(1); }
+  50% { box-shadow: 0 0 24px rgba(99, 102, 241, 0.45); transform: scale(1.02); }
+}
+.scene-pipeline .pipe-step.active {
+  animation: pipeMarch 2.6s ease-in-out infinite;
+}
+.scene-pipeline .pipe-step.s1 { animation-delay: 0s; }
+.scene-pipeline .pipe-step.s2 { animation-delay: 0.65s; }
+.scene-pipeline .pipe-step.s3 { animation-delay: 1.3s; }
+.scene-pipeline .pipe-step.s4 {
+  animation-delay: 1.95s;
+  border-color: rgba(45, 212, 191, 0.6);
+  background: rgba(45, 212, 191, 0.08);
+}
+.scene-pipeline .pipe-step.s4 .step-num {
+  color: var(--teal);
+  background: rgba(45, 212, 191, 0.16);
+}
+
+/* ─── Clarifying Questions dialog ─── */
+.qa-dialog {
+  max-width: 780px;
+  margin: clamp(1.2rem, 2.2vw, 2rem) auto 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-elev);
+  padding: 22px 26px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.qa-dialog::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scanBar 3.6s linear infinite;
+}
+.qa-dialog .qa-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.qa-dialog .qa-head .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dotBlink 1.4s ease-in-out infinite;
+}
+.qa-dialog .qa-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  align-items: baseline;
+}
+.qa-dialog .qa-row:first-of-type { border-top: none; }
+.qa-dialog .qa-row .ask {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.qa-dialog .qa-row .qtext {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+  color: var(--text-paper);
+  line-height: 1.4;
+}
+.qa-dialog .qa-row .ans {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--teal);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.qa-dialog .qa-row .atext {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+/* ─── Content-Designer folder file tree ─── */
+.scene-folder {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 30%, rgba(199, 210, 254, 0.45) 0%, var(--bg) 70%);
+  padding: 24px;
+  box-shadow: var(--shadow-card-rest);
+}
+.scene-folder .folder-tree {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.scene-folder .ft-root {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scene-folder .ft-row { display: block; padding-left: 14px; }
+.scene-folder .ft-folder { color: var(--text-paper); }
+.scene-folder .ft-file { color: var(--text-paper); }
+.scene-folder .ft-meta { color: var(--violet); }
+.scene-folder .ft-comment {
+  color: var(--muted);
+  font-size: 10px;
+  margin-left: 10px;
+  font-style: italic;
+}
+.scene-folder .ft-row::before {
+  content: '└';
+  color: var(--text-dim);
+  margin-right: 6px;
+  opacity: 0.5;
+}
+.scene-folder .ft-row.lit { color: var(--text-paper); }
+.scene-folder .ft-row.lit::before {
+  color: var(--accent);
+  opacity: 1;
+  text-shadow: 0 0 6px var(--accent-glow);
+}
+.scene-folder .ft-row.indent { padding-left: 28px; }
+.scene-folder .ft-row.indent::before { content: '  └'; }
+
+/* ─── Toni's recipe filename list ─── */
+.recipe-list {
+  max-width: 720px;
+  margin: clamp(1.4rem, 2.6vw, 2rem) auto 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.recipe-tile {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: var(--bg-elev);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  position: relative;
+  text-align: left;
+  transition: all 0.3s var(--ease);
+}
+.recipe-tile:hover {
+  border-color: rgba(99, 102, 241, 0.45);
+  background: rgba(99, 102, 241, 0.05);
+}
+.recipe-tile .r-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  background: rgba(99, 102, 241, 0.14);
+  border-radius: 6px;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+.recipe-tile .r-file {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-paper);
+}
+.recipe-tile .r-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--teal);
+  text-transform: uppercase;
+}
+.recipe-tile.workshop {
+  grid-column: span 2;
+  border-color: rgba(45, 212, 191, 0.45);
+  background: rgba(45, 212, 191, 0.05);
+}
+.recipe-tile.workshop .r-num {
+  color: var(--teal);
+  background: rgba(45, 212, 191, 0.14);
+}
+.recipe-tile .r-pulse {
+  position: absolute;
+  right: 8px; top: 8px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dotBlink 1.6s ease-in-out infinite;
+  opacity: 0.6;
+}
+.recipe-tile.workshop .r-pulse { background: var(--teal); }
+@media (max-width: 720px) {
+  .recipe-list { grid-template-columns: 1fr; }
+  .recipe-tile.workshop { grid-column: span 1; }
+}
+
+/* ─── Toni proof-of-voice quote callout ─── */
+.proof-quote {
+  max-width: 760px;
+  margin: clamp(1.4rem, 2.6vw, 2rem) auto 0;
+  background: linear-gradient(180deg, rgba(45, 212, 191, 0.08), rgba(99, 102, 241, 0.05));
+  border: 1px solid rgba(45, 212, 191, 0.5);
+  border-radius: 16px;
+  padding: 26px 30px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.proof-quote::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  animation: scanBar 4s linear infinite;
+}
+.proof-quote .pq-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.proof-quote .pq-head .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: dotBlink 1.4s ease-in-out infinite;
+}
+.proof-quote .pq-text {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  color: var(--text-paper);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-left: 24px;
+}
+.proof-quote .pq-text::before {
+  content: '"';
+  position: absolute;
+  left: 0; top: -10px;
+  font-size: 3rem;
+  color: var(--teal);
+  opacity: 0.5;
+}
+.proof-quote .pq-attr {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.proof-quote .pq-attr .name {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ─── Diagnostic-to-Hire chain (Q→Pattern→Role) ─── */
+.chain-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 14px;
+  align-items: stretch;
+  max-width: 880px;
+  margin: clamp(1.4rem, 2.6vw, 2rem) auto 0;
+}
+.chain-cell {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: var(--bg-elev);
+  text-align: left;
+}
+.chain-cell .cc-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.chain-cell .cc-body {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+  color: var(--text-paper);
+  line-height: 1.45;
+}
+.chain-cell.q .cc-head { color: var(--violet); }
+.chain-cell.p .cc-head { color: var(--accent); }
+.chain-cell.r {
+  border-color: rgba(45, 212, 191, 0.5);
+  background: rgba(45, 212, 191, 0.06);
+}
+.chain-cell.r .cc-head { color: var(--teal); }
+.chain-arrow {
+  align-self: center;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 18px;
+  animation: arrowPulse 2.2s ease-in-out infinite;
+}
+
+/* ─── Brain-read trace (file reads list) ─── */
+.brain-trace {
+  max-width: 540px;
+  margin: clamp(1.2rem, 2.2vw, 1.8rem) auto 0;
+  background: var(--tam-midnight, #0F172A);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  border-radius: 14px;
+  padding: 18px 22px;
+  font-family: var(--font-mono);
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.brain-trace::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scanBar 3s linear infinite;
+}
+.brain-trace .bt-head {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brain-trace .bt-head .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dotBlink 1.4s ease-in-out infinite;
+}
+.brain-trace .bt-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 11px;
+  align-items: baseline;
+}
+.brain-trace .bt-row .verb {
+  color: var(--teal);
+  letter-spacing: 0.1em;
+}
+.brain-trace .bt-row .file {
+  color: var(--text-paper);
+  word-break: break-all;
+}
+.brain-trace .bt-row.streaming .verb::after {
+  content: '...';
+  color: var(--accent);
+}
+
+/* ─── Lesson 2 inline command line ─── */
+.cmd-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(1rem, 1.8vw, 1.4rem);
+  padding: 10px 18px;
+  background: var(--tam-midnight, #0F172A);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.85rem, 1.15vw, 1.05rem);
+  color: #F8FAFC;
+}
+.cmd-line .cl-prompt { color: var(--accent); user-select: none; font-weight: 600; }
+.cmd-line .cl-cmd { color: #F8FAFC; }
+.cmd-line .cl-arg { color: var(--teal); }
+.cmd-line .cl-cur {
+  display: inline-block;
+  width: 1px; height: 14px;
+  background: var(--accent);
+  animation: curBlink 0.6s step-end infinite;
+}
+
+/* ─── 3-thing wrap (Day 2 close) ─── */
+.wrap-stack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  max-width: 880px;
+  margin: clamp(1.6rem, 3vw, 2.4rem) auto 0;
+}
+.wrap-tile {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  background: var(--bg-elev);
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.wrap-tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--bcol, var(--accent));
+  box-shadow: 0 0 14px var(--bcol, var(--accent));
+}
+.wrap-tile .wt-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--bcol, var(--accent));
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.wrap-tile .wt-name {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.1vw, 1.8rem);
+  color: var(--text-paper);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.wrap-tile .wt-line {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.wrap-tile.t1 { --bcol: var(--accent); }
+.wrap-tile.t2 { --bcol: var(--teal); }
+.wrap-tile.t3 { --bcol: var(--amber); }
+
+</style>
+</head>
+
+<body>
+
+<!-- Hex mesh + cursor glow bg -->
+<canvas id="hexBg"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Fixed UI · do not remove -->
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="slide-number"><span class="curr" id="slideCurr">01</span> / <span id="slideTotal">22</span></div>
+
+<!-- Prev / Next arrows -->
+<div class="nav-arrows">
+  <button class="nav-arrow" id="navPrev" aria-label="Previous slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="nav-arrow" id="navNext" aria-label="Next slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<!-- Brand watermark · AI Team in 3 Days · real TAM icon-mark only.
+     Source: context/tam-design-system/project/assets/logo-on-black.svg
+     Approach: indigo path layer only (no rect, no white-shadow path), viewBox
+     cropped to icon area so the wordmark glyph data is hidden. Renders as a
+     clean indigo icon mark on the Ghost White page bg. -->
+<div class="watermark" aria-label="AI Team in 3 Days · Truly Authentic Marketing">
+  <svg viewBox="180 270 720 410" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M 529.500 280.938 C 497.076 286.313, 476.465 302.190, 454.781 338.500 C 449.214 347.821, 416.989 405.776, 395.007 446 C 384.296 465.599, 369.339 492.384, 353.855 519.698 C 330.380 561.107, 327.759 568.374, 327.599 592.500 C 327.437 616.978, 333.391 632.455, 348.964 648.043 C 364.553 663.646, 381.202 670.200, 405.500 670.299 C 433.113 670.412, 453.413 661.878, 483.520 637.501 C 509.377 616.563, 525.955 610.199, 547.683 612.869 C 564.641 614.953, 575.573 620.620, 600 639.991 C 625.217 659.988, 642.368 667.709, 667.121 670.205 C 724.417 675.985, 763.134 628.681, 749.527 569.522 C 747.492 560.674, 745.348 555.178, 738.470 541.181 L 729.938 523.818 768.055 448.159 C 789.098 406.390, 807.278 371.492, 808.642 370.250 C 813.465 365.856, 820.526 367.992, 823.040 374.605 C 823.633 376.166, 824 421.789, 824 494.115 C 824 592.637, 824.222 611.525, 825.405 613.800 C 830.934 624.427, 846.462 624.976, 851.330 614.717 C 854.147 608.780, 853.861 373.998, 851.025 364.817 C 841.967 335.490, 803.906 328.380, 784.215 352.336 C 781.783 355.295, 769.653 378.197, 752.964 411.336 C 737.963 441.126, 718.939 478.775, 710.691 495 L 695.693 524.500 700.844 534 C 711.215 553.130, 717.015 565.706, 719.523 574.500 C 727.833 603.647, 716.076 631.059, 692.078 638.494 L 689.655 639.244 691.879 636.372 C 700.996 624.597, 704.732 616.149, 706.083 604.257 C 708.118 586.353, 703.282 571.626, 684.511 538.554 C 677.251 525.763, 676.994 525.296, 661.958 497.500 C 655.710 485.950, 642.968 462.550, 633.642 445.500 C 624.316 428.450, 613.780 409.100, 610.229 402.500 C 592.716 369.958, 580.354 348.242, 577.976 345.844 C 574.614 342.454, 569.049 340.867, 564.750 342.073 C 557.930 343.985, 555.894 346.927, 536.768 382.500 C 529.081 396.798, 520.949 411.707, 501.039 448 C 494.854 459.275, 485.760 475.998, 480.829 485.161 L 471.864 501.823 466.182 504.123 C 463.057 505.388, 457.627 507.917, 454.116 509.744 C 450.604 511.570, 447.505 512.839, 447.229 512.563 C 446.953 512.287, 452.721 501.135, 460.046 487.780 C 467.371 474.426, 476.821 457.200, 481.046 449.500 C 485.270 441.800, 493.329 427.175, 498.954 417 C 504.580 406.825, 516.440 385.225, 525.310 369 C 543.575 335.588, 547.992 329.824, 557.835 326.555 C 566.025 323.834, 576.290 324.658, 582.597 328.542 C 591.377 333.948, 594.295 338.663, 633.586 410.945 C 639.134 421.150, 648.753 438.725, 654.962 450 C 661.171 461.275, 670.738 478.825, 676.223 489 C 681.707 499.175, 686.589 507.917, 687.072 508.426 C 687.590 508.971, 691.806 501.365, 697.329 489.926 C 710.343 462.967, 740.739 400.542, 755.705 370.038 C 767.733 345.523, 768.468 344.306, 775.485 337.289 C 805.641 307.133, 855.941 320.617, 867.659 362 C 869.402 368.153, 869.500 375.084, 869.500 492 L 869.500 615.500 866.909 621 C 855.872 644.427, 822.447 645.338, 811 622.524 L 807.500 615.549 807 508.524 L 806.500 401.500 775.750 462.747 C 758.837 496.433, 745 524.679, 745 525.517 C 745 526.355, 747.092 531.193, 749.649 536.270 C 752.207 541.346, 755.504 548.790, 756.977 552.811 C 760.175 561.541, 759.412 562.156, 769.138 543 L 776.500 528.500 777.072 573.500 C 777.708 623.533, 777.771 624.064, 784.767 637.376 C 791.684 650.539, 802.816 660.136, 817.758 665.818 C 827.289 669.442, 848.179 669.650, 857.760 666.216 C 873.878 660.438, 886.198 649.701, 893.001 635.500 C 900.446 619.959, 900.113 627.212, 899.748 488.500 C 899.385 350.750, 899.928 362.328, 892.951 343.500 C 886.337 325.652, 871.605 309.384, 854 300.490 C 818.686 282.650, 774.520 290.877, 750.370 319.795 C 741.637 330.252, 738.796 335.194, 725.082 363.779 C 718.030 378.475, 707.425 400.400, 701.514 412.500 C 695.603 424.600, 689.922 436.441, 688.891 438.814 C 686.643 443.986, 686.034 443.723, 681.673 435.706 C 679.816 432.293, 673.994 421.625, 668.736 412 C 663.477 402.375, 652.437 382.125, 644.202 367 C 617.375 317.729, 609.953 307.568, 591.675 295.093 C 575.277 283.902, 548.457 277.796, 529.500 280.938 M 225.361 292.899 C 199.203 300.386, 182.014 322.382, 180.283 350.585 C 178.398 381.315, 198.734 409.553, 227.373 415.971 C 230.619 416.699, 272.576 417.594, 279.777 417.089 C 280.764 417.020, 280.991 413.657, 280.777 402.250 L 280.500 387.500 256.500 387 C 229.025 386.428, 226.813 385.860, 218.992 377.376 C 212.447 370.275, 210.532 365.108, 210.515 354.500 C 210.491 340.264, 216.688 329.774, 228.577 323.923 L 233.500 321.500 290.750 321.219 C 322.238 321.064, 348 321.208, 348 321.539 C 348 321.870, 346.265 324.247, 344.144 326.821 C 334.563 338.445, 328.871 351.555, 327.030 366.230 C 325.838 375.740, 325.573 541.002, 326.750 540.997 C 327.481 540.994, 331.327 534.434, 343.164 513 L 348.962 502.500 348.996 435.500 C 349.033 360.892, 349.022 361.043, 355.714 349.022 C 362.535 336.768, 374.779 327.469, 389.500 323.362 C 394.227 322.043, 401.385 321.595, 423.238 321.251 L 450.975 320.813 456.106 313.657 C 458.928 309.720, 464.661 303.012, 468.845 298.750 L 476.453 291 353.977 291.071 C 240.271 291.137, 231.060 291.268, 225.361 292.899 M 517 315.528 C 498.334 325.494, 488.355 338.561, 461.272 388.500 C 453.662 402.533, 438.021 430.910, 421.036 461.500 C 375.533 543.450, 373.632 547.018, 371.423 554.617 C 365.245 575.867, 380.700 595.021, 403.020 593.777 C 413.398 593.198, 419.404 590.201, 435.319 577.662 C 474.063 547.137, 503.892 535.509, 543 535.686 C 560.740 535.766, 572.699 537.791, 589.850 543.617 C 595.543 545.551, 600.330 546.991, 600.489 546.817 C 600.647 546.642, 598.273 541.881, 595.213 536.237 C 588.910 524.611, 589.577 525.025, 571.052 521.245 C 557.697 518.520, 522.068 518.842, 508.312 521.813 C 480.937 527.724, 458.507 539.223, 423.678 565.200 C 409.424 575.831, 406.694 577.323, 401.500 577.323 C 393.173 577.323, 387.011 571.329, 387.004 563.221 C 386.999 558.319, 387.951 556.294, 404.029 527 C 410.217 515.725, 423.145 492.100, 432.758 474.500 C 442.371 456.900, 452.153 439.125, 454.497 435 C 456.841 430.875, 463.702 418.500, 469.745 407.500 C 475.788 396.500, 483.103 383.225, 486 378 C 488.897 372.775, 495.745 360.175, 501.218 350 C 513.557 327.060, 514.230 325.938, 520.266 318.250 C 525.938 311.025, 525.741 310.861, 517 315.528 M 390.500 336.386 C 374.755 340.215, 362.624 353.442, 359.965 369.679 C 358.847 376.505, 358.645 482.003, 359.750 481.994 C 360.624 481.986, 361.343 480.773, 373.127 459.431 L 382 443.362 382 407.792 C 382 374.273, 382.110 372.085, 383.910 369.861 C 385.782 367.547, 386.205 367.494, 405.361 367.191 C 422.742 366.916, 424.963 366.693, 425.444 365.175 C 425.742 364.236, 429.549 357.063, 433.904 349.234 L 441.823 335 418.661 335.085 C 404.181 335.138, 393.626 335.626, 390.500 336.386 M 233.984 340.863 C 224.435 345.969, 224.072 360.495, 233.321 367.395 C 236.009 369.400, 237.486 369.515, 264.545 369.807 L 292.947 370.114 293.223 492.807 L 293.500 615.500 295.864 622.500 C 305.357 650.611, 323.790 666.600, 351.250 670.545 C 356.170 671.252, 358.016 669.775, 353.860 668.456 C 350.694 667.451, 335.319 652.340, 331.011 646 C 320.028 629.837, 314.798 613.201, 314.877 594.690 C 314.901 589.086, 315.287 534.100, 315.735 472.500 L 316.549 360.500 318.835 352.571 C 320.093 348.210, 321.544 343.852, 322.061 342.887 C 322.577 341.921, 323 340.652, 323 340.066 C 323 339.328, 309.837 339, 280.234 339 C 240.430 339, 237.228 339.129, 233.984 340.863 M 563.032 397.607 L 558.565 406.190 560.613 409.845 C 565.170 417.978, 588.557 460.642, 595.223 472.984 C 597.456 477.118, 602.989 487.250, 607.518 495.500 C 612.048 503.750, 621.485 521.075, 628.489 534 C 635.493 546.925, 643.820 562.225, 646.993 568 C 658.023 588.076, 659.362 591.154, 659.385 596.500 C 659.421 605, 654.464 610.088, 646.081 610.153 C 640.053 610.199, 637.461 608.851, 624.186 598.759 C 580.732 565.723, 549.817 558.265, 507.349 570.572 C 491.405 575.192, 475.114 584.469, 454 600.949 C 431.682 618.370, 421.572 623.027, 404.481 623.761 C 389.114 624.421, 377.549 621.237, 365.309 612.976 C 359.503 609.058, 358.866 609.816, 362.360 616.489 C 368.818 628.823, 382.700 638.060, 397.842 640.098 C 416.640 642.628, 434.678 636.764, 454.500 621.679 C 479.841 602.395, 485.204 598.597, 492.309 594.900 C 507.106 587.202, 526.562 582, 540.559 582 C 566.155 582, 587.636 591.204, 617.586 615.004 C 621.625 618.214, 627.841 622.273, 631.400 624.025 C 649.796 633.082, 673.237 621.332, 676.338 601.500 C 677.921 591.373, 674.710 583.182, 655.563 548.500 C 650.704 539.700, 642.805 525.300, 638.009 516.500 C 633.212 507.700, 626.682 495.775, 623.496 490 C 615.642 475.764, 609.081 463.759, 597.810 443 C 592.585 433.375, 586.066 421.450, 583.325 416.500 C 580.584 411.550, 576.159 403.337, 573.493 398.250 C 570.827 393.163, 568.388 389.005, 568.073 389.012 C 567.758 389.018, 565.490 392.886, 563.032 397.607 M 539.665 440.250 C 538.905 441.488, 536.114 446.550, 533.462 451.500 C 530.811 456.450, 525.122 467.011, 520.820 474.969 C 512.220 490.881, 511.988 491.530, 515.250 490.574 C 519.485 489.333, 553.415 488.788, 561.484 489.832 C 565.876 490.400, 569.604 490.729, 569.770 490.564 C 569.935 490.398, 565.949 482.666, 560.912 473.381 C 555.875 464.097, 549.519 452.337, 546.788 447.250 C 541.216 436.872, 541.542 437.192, 539.665 440.250" stroke="none" fill="#6366F1" fill-rule="evenodd"/>
+  </svg>
+  <span class="bar"></span>
+  <span>AI Team in 3 Days · Day 2</span>
+</div>
+
+
+<!-- ==================================================================
+   SLIDES GO HERE · replace everything between these comments
+   with brief-driven slides. Each slide MUST have `data-title="..."`.
+   See examples/m1-reference.html for a full worked deck.
+   ================================================================== -->
+
+<!-- ==================================================================
+   DAY 2 · HIRE CONTENT DESIGNER · 3 lessons · ~60 min · 22 slides total
+   Lesson 1 (slides 01-05) · Why Chief of Staff Recommended These Hires ~10 min
+   Lesson 2 (slides 06-13) · Hire Content Designer via /hire-employee  ~20 min
+   Lesson 3 (slides 14-22) · First Real Task                            ~30 min
+   ================================================================== -->
+
+<!-- ============== LESSON 1 · Why Chief of Staff Recommended These Hires ============== -->
+
+<!-- 01 · TITLE with brand block · dark-hero variant so the real logo-on-black SVG lands correctly -->
+<section class="slide lead dark-hero" data-title="Title — Day 2 — Hire Content Designer">
+  <div class="slide-content">
+    <h3 class="kicker reveal">Day 02 · First Hire</h3>
+    <h1 class="display reveal">Hire <em>Content Designer.</em></h1>
+    <h2 class="reveal">Yesterday Toni installed Chief of Staff and ran the Diagnostic. Today she hires <span class="hl-static">Specialist #1</span> — and ships 5 brand-voice pieces in their first hour.</h2>
+    <div class="brand-block">
+      <!-- Real TAM logo · embedded verbatim from context/tam-design-system/project/assets/logo-on-black.svg
+           Both paths preserved: white-offset highlight layer + indigo primary layer. The native black
+           rect blends into the dark-hero gradient backdrop. -->
+      <svg class="tam-logo" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Truly Authentic Marketing">
+        <rect x="0" y="0" width="1080" height="1080" fill="#000000"/>
+        <path d="M 519.461 282.436 C 485.904 291.112, 468.770 309.299, 435.549 371.500 C 432.906 376.450, 427.930 385.450, 424.492 391.500 C 418.887 401.365, 406.258 424.199, 382.735 467 C 371.484 487.471, 361.112 505.946, 350.452 524.500 C 329.667 560.677, 323.793 580.127, 326.810 602.785 C 331.047 634.609, 349.026 656.744, 379.149 667.224 C 392.411 671.837, 418.048 672.051, 432.500 667.670 C 445.255 663.803, 459.849 656.179, 471.658 647.213 C 477.245 642.971, 486.470 635.940, 492.158 631.588 C 510.415 617.622, 526.002 612.169, 544.514 613.274 C 562.408 614.341, 570.834 618.500, 600.171 640.742 C 624.550 659.226, 637.481 665.738, 657.250 669.488 C 709.892 679.474, 753.034 645.364, 752.992 593.792 C 752.978 575.421, 749.178 561.342, 738.281 539.282 L 730.605 523.742 750.822 483.621 C 796.872 392.238, 806.986 372.570, 808.921 370.634 C 811.726 367.830, 817.370 367.926, 820.272 370.828 L 822.500 373.055 823 492.955 C 823.497 612.103, 823.513 612.871, 825.562 615.615 C 830.903 622.768, 837.944 624.658, 845.545 620.978 C 854.642 616.574, 853.953 627.119, 853.978 491.960 C 854.002 362.462, 854.224 367.694, 848.243 356.705 C 836.805 335.690, 806.363 330.848, 788.472 347.199 C 781.102 353.935, 781.247 353.670, 735.117 445.218 L 694.948 524.935 703.011 539.398 C 716.579 563.736, 721.944 578.808, 721.983 592.701 C 722.041 613.450, 709.789 632.435, 693.064 637.513 C 690.836 638.190, 690.949 637.879, 694.381 633.876 C 698.932 628.571, 704.351 617.411, 705.878 610.201 C 709.826 591.557, 704.974 573.453, 688.196 544.217 C 683.688 536.362, 680 529.789, 680 529.610 C 680 529.432, 676.570 523.034, 672.378 515.393 C 668.186 507.752, 660.375 493.400, 655.020 483.500 C 615.607 410.636, 582.921 351.224, 579.778 346.735 C 576.828 342.522, 572.492 340.698, 566.736 341.251 C 560.157 341.883, 555.956 346.188, 548.439 360 C 545.296 365.775, 538.805 377.700, 534.014 386.500 C 525.616 401.927, 491.302 464.660, 477.606 489.623 C 471.191 501.316, 470.788 501.807, 466.228 503.498 C 463.627 504.462, 458.605 506.761, 455.066 508.608 C 451.527 510.454, 448.445 511.778, 448.217 511.551 C 447.830 511.163, 461.924 484.856, 471.549 468 C 473.905 463.875, 478.716 455.100, 482.242 448.500 C 485.767 441.900, 495.407 424.350, 503.662 409.500 C 511.918 394.650, 523.809 373.089, 530.087 361.586 C 542.398 339.026, 548.010 331.626, 555.460 328.124 C 566.004 323.167, 577.956 324.688, 586.320 332.050 C 592.246 337.266, 598.145 346.735, 614.015 376.500 C 616.361 380.900, 618.640 384.963, 619.079 385.529 C 619.519 386.095, 624.106 394.420, 629.273 404.029 C 642.613 428.840, 657.161 455.523, 664.968 469.500 C 668.654 476.100, 675.007 487.687, 679.085 495.248 C 683.163 502.809, 686.983 508.997, 687.572 508.998 C 688.162 508.999, 692.514 501.012, 697.242 491.250 C 706.588 471.957, 742.875 397.474, 758.402 365.713 C 767.059 348.005, 768.801 345.163, 774.988 338.649 C 786.754 326.263, 799.636 321.306, 817.500 322.291 C 842.850 323.689, 860.827 338.365, 867.065 362.756 C 869.738 373.207, 870.116 608.878, 867.474 617.774 C 860.033 642.834, 822.877 645.778, 811.311 622.224 L 808.500 616.500 808 509 C 807.702 445.021, 807.130 401.568, 806.587 401.668 C 805.783 401.816, 756.771 498.246, 747.416 518.085 L 743.840 525.669 749.813 538.085 C 753.098 544.913, 756.547 552.866, 757.476 555.758 C 759.543 562.188, 760.008 561.940, 765.141 551.674 C 767.389 547.178, 770.865 540.575, 772.864 537 L 776.500 530.500 777.024 575.500 C 777.621 626.711, 777.699 627.257, 786.608 641.668 C 810.777 680.763, 872.265 678.076, 892.990 637.020 C 894.542 633.945, 896.867 628.070, 898.156 623.965 L 900.500 616.500 900.493 491.500 L 900.487 366.500 897.844 357 C 893.917 342.880, 891.420 336.900, 885.960 328.537 C 859.577 288.122, 801.550 278.072, 762.869 307.219 C 747.223 319.009, 742.991 325.556, 719.052 375 C 685.253 444.808, 686.650 442.083, 685.354 440.739 C 684.696 440.058, 681.810 435, 678.941 429.500 C 676.073 424, 670.938 414.550, 667.532 408.500 C 664.125 402.450, 660.670 396.150, 659.853 394.500 C 653.305 381.271, 627.071 334.563, 620.445 324.335 C 606.432 302.703, 585.762 287.508, 562.893 282.026 C 550.662 279.094, 531.693 279.273, 519.461 282.436 M 230.788 291.081 C 217.584 293.017, 202.160 302.222, 193.223 313.500 C 165.855 348.040, 181.132 401.656, 222.172 415.100 C 229.146 417.384, 230.756 417.500, 255.500 417.500 L 281.500 417.500 281.500 402.500 L 281.500 387.500 257.500 386.997 C 230.197 386.425, 229.801 386.327, 220.460 377.790 C 212.951 370.926, 210.667 364.678, 211.217 352.500 C 211.797 339.658, 216.772 331.211, 227.136 325.471 L 232.500 322.500 289.739 322.219 L 346.978 321.937 341.892 328.719 C 335.876 336.738, 332.102 343.918, 328.865 353.500 L 326.500 360.500 326.220 451.250 C 326.032 511.867, 326.275 542, 326.949 542 C 327.505 542, 328.923 540.087, 330.102 537.750 C 331.280 535.413, 336.014 526.900, 340.622 518.834 L 349 504.168 349.017 437.834 C 349.037 364.715, 349.104 363.774, 355.184 351.283 C 359.244 342.942, 369.247 332.632, 377.015 328.782 C 388.137 323.269, 392.187 322.690, 422.692 322.247 L 450.884 321.838 456.883 313.582 C 460.183 309.040, 466.059 302.148, 469.941 298.266 C 473.823 294.383, 477 290.935, 477 290.603 C 477 289.669, 237.247 290.134, 230.788 291.081 M 516.806 316.143 C 498.964 325.824, 489.083 338.676, 464.249 384.500 C 461.269 390, 455.557 400.350, 451.556 407.500 C 439.132 429.705, 414.891 473.525, 406.469 489 C 403.626 494.225, 397.381 505.475, 392.591 514 C 374.771 545.718, 370.584 555.084, 370.562 563.278 C 370.499 587.131, 394.727 600.678, 417.500 589.523 C 420.250 588.176, 426.321 584.020, 430.990 580.287 C 473.915 545.975, 504.562 534.087, 547 535.285 C 563.718 535.757, 582.315 539.344, 594.557 544.459 C 596.620 545.321, 598.515 545.818, 598.770 545.564 C 599.024 545.309, 596.974 540.916, 594.213 535.801 L 589.195 526.500 581.347 524.296 C 568.634 520.726, 559.529 519.662, 541.500 519.642 C 498.503 519.594, 467.862 531.878, 421 567.954 C 410.419 576.100, 406.730 578, 401.500 578 C 392.373 578, 386.495 572.093, 386.593 563.018 C 386.654 557.252, 387.602 555.308, 410.741 513.500 C 413.481 508.550, 422.345 492.387, 430.439 477.582 C 445.006 450.938, 455.237 432.398, 465.524 414 C 468.445 408.775, 480.281 387.175, 491.825 366 C 503.370 344.825, 514.544 325.083, 516.658 322.129 C 518.771 319.175, 521.117 315.912, 521.872 314.879 C 523.637 312.462, 523.550 312.483, 516.806 316.143 M 394.951 335.061 C 380.004 337.262, 366.989 346.925, 361.870 359.621 L 359.500 365.500 359.219 424.250 C 359.065 456.563, 359.322 483, 359.791 483 C 360.260 483, 362.594 479.512, 364.978 475.250 C 367.362 470.988, 371.209 464.125, 373.526 460 C 375.843 455.875, 378.926 450.145, 380.378 447.266 L 383.018 442.032 382.759 407.766 C 382.561 381.620, 382.799 372.977, 383.762 371.294 C 385.688 367.926, 391.012 367.012, 408.733 367.006 L 424.966 367 427.626 361.750 C 429.089 358.863, 432.922 351.925, 436.143 346.332 C 439.364 340.740, 442 335.678, 442 335.082 C 442 333.794, 403.675 333.776, 394.951 335.061 M 234.036 340.250 C 223.100 345.858, 223.081 362.030, 234.003 368.446 C 237.261 370.360, 239.393 370.523, 265.227 370.832 L 292.954 371.164 293.227 494.332 L 293.500 617.500 295.859 624.473 C 298.780 633.107, 304.748 643.771, 309.996 649.732 C 320.461 661.622, 339.297 671, 352.710 671 C 357.089 671, 358.480 669.605, 355.154 668.549 C 352.325 667.651, 341.280 657.738, 335.501 650.910 C 328.863 643.068, 320.704 626.865, 317.920 616 L 315.743 607.500 315.937 490.500 C 316.150 362.476, 316.331 358.419, 322.489 343.681 C 323.320 341.692, 324 339.600, 324 339.032 C 324 338.339, 309.958 338, 281.212 338 C 238.806 338, 238.385 338.020, 234.036 340.250 M 563.719 397.517 C 561.674 401.651, 560 405.598, 560 406.290 C 560 406.981, 562.750 412.486, 566.112 418.523 C 569.473 424.560, 575.245 435.125, 578.938 442 C 585.348 453.933, 611.242 501.397, 629.946 535.500 C 657.566 585.857, 660.001 590.817, 659.996 596.721 C 659.984 612.952, 642.217 615.561, 627 601.567 C 621.104 596.145, 600.281 582.450, 591.081 577.944 C 571.296 568.253, 558.212 565.469, 536.500 566.328 C 507.768 567.464, 488.471 575.576, 455.953 600.188 C 437.488 614.164, 431.916 617.618, 421.500 621.543 C 404.298 628.026, 380.008 624.399, 363.921 612.944 C 360.230 610.315, 360.262 611.180, 364.103 617.878 C 379.553 644.822, 417.906 647.585, 450.426 624.098 C 453.928 621.569, 461.531 615.800, 467.322 611.278 C 495.135 589.559, 514.320 582, 541.630 582 C 567.659 582, 585.205 589.363, 616.405 613.380 C 630.358 624.120, 635.574 626.508, 645 626.469 C 668.483 626.372, 681.923 604.973, 672.714 582.344 C 670.522 576.958, 645.943 531.526, 618.968 483 C 616.369 478.325, 609.839 466.400, 604.457 456.500 C 599.075 446.600, 590.989 431.750, 586.488 423.500 C 581.987 415.250, 576.098 404.342, 573.402 399.260 C 570.706 394.178, 568.261 390.015, 567.969 390.010 C 567.677 390.004, 565.765 393.382, 563.719 397.517 M 537.457 445.665 C 535.402 449.424, 531.821 455.875, 529.499 460 C 521.925 473.455, 513.850 489.183, 514.290 489.623 C 514.526 489.860, 518.721 489.595, 523.610 489.035 C 534.785 487.755, 546.811 487.751, 558.908 489.026 C 564.083 489.571, 568.506 489.828, 568.736 489.597 C 568.967 489.366, 567.164 485.650, 564.730 481.339 C 562.296 477.027, 556.560 466.525, 551.984 458 C 540.336 436.304, 541.865 437.601, 537.457 445.665 M 62.690 722.643 C 62.310 723.023, 62 725.283, 62 727.667 L 62 732 67.500 732 L 73 732 73 749.500 L 73 767 79 767 L 85 767 85 749.550 L 85 732.100 90.750 731.800 L 96.500 731.500 96.500 727 L 96.500 722.500 79.940 722.227 C 70.832 722.076, 63.069 722.264, 62.690 722.643 M 101.667 722.667 C 101.300 723.033, 101 733.158, 101 745.167 L 101 767 107 767 L 113 767 113 758.917 C 113 748.873, 114.028 748.897, 119.500 759.066 L 123.500 766.500 129.750 766.798 C 133.188 766.961, 136 766.725, 136 766.273 C 136 765.821, 134.048 762.121, 131.663 758.052 L 127.326 750.654 131.787 746.380 L 136.248 742.105 135.799 735.904 C 135.283 728.767, 132.185 724.978, 125.303 723.067 C 121.135 721.910, 102.735 721.598, 101.667 722.667 M 142.625 723.534 C 141.572 726.279, 141.942 750.248, 143.104 754.500 C 147.226 769.590, 167.758 772.690, 177.408 759.679 C 179.340 757.075, 179.500 755.545, 179.500 739.679 L 179.500 722.500 174.500 722.500 L 169.500 722.500 168.907 738 C 168.582 746.525, 168.244 753.580, 168.157 753.679 C 165.957 756.174, 164.191 757, 161.051 757 C 155.034 757, 154.566 755.746, 154 738.101 L 153.500 722.500 148.375 722.202 C 144.376 721.970, 143.113 722.262, 142.625 723.534 M 187.712 722.622 C 187.320 723.013, 187 733.158, 187 745.167 L 187 767 200.057 767 L 213.115 767 212.807 762.750 L 212.500 758.500 205.773 758.205 L 199.046 757.910 198.773 740.205 L 198.500 722.500 193.462 722.205 C 190.690 722.043, 188.103 722.230, 187.712 722.622 M 214.773 722.560 C 214.417 722.917, 217.472 729.862, 221.563 737.995 C 228.728 752.241, 229 753.041, 229 759.891 L 229 767 235 767 L 241 767 241 759.451 C 241 752.060, 241.147 751.616, 248 738.360 C 256.565 721.792, 256.546 722, 249.510 722 L 244.020 722 239.379 731.240 L 234.739 740.481 232.401 734.990 C 227.080 722.493, 227.116 722.533, 220.960 722.206 C 217.913 722.045, 215.129 722.204, 214.773 722.560 M 286.261 723.250 C 285.720 723.938, 284.122 727.875, 282.708 732 C 281.295 736.125, 277.913 745.708, 275.192 753.295 L 270.245 767.089 276.339 766.795 C 282.266 766.508, 282.458 766.411, 283.361 763.250 L 284.289 760 292.567 760 L 300.845 760 302 763.500 C 303.147 766.976, 303.196 767, 309.078 767 C 312.335 767, 315 766.843, 315 766.652 C 315 766.460, 312.490 759.372, 309.423 750.902 C 306.356 742.431, 302.910 732.800, 301.766 729.500 C 300.622 726.200, 299.194 723.169, 298.593 722.765 C 296.760 721.533, 287.321 721.904, 286.261 723.250 M 319.406 724.519 C 317.982 730.191, 319.513 754.331, 321.562 758.515 C 327.337 770.310, 346.032 770.973, 354.408 759.679 C 356.340 757.075, 356.500 755.545, 356.500 739.679 L 356.500 722.500 351.500 722.500 L 346.500 722.500 346 737.646 C 345.424 755.081, 344.628 757, 337.967 757 C 332.045 757, 331.564 755.695, 331 738.101 L 330.500 722.500 325.282 722.199 C 320.379 721.916, 320.024 722.056, 319.406 724.519 M 361.442 724.374 C 359.992 730.154, 361.025 731.475, 367.250 731.800 L 373 732.100 373 749.550 L 373 767 379 767 L 385 767 385 749.500 L 385 732 390.555 732 L 396.110 732 395.805 727.250 L 395.500 722.500 378.775 722.226 L 362.050 721.952 361.442 724.374 M 401.712 722.622 C 401.320 723.013, 401 733.158, 401 745.167 L 401 767 407 767 L 413 767 413 758 L 413 749 421 749 L 429 749 429 758 L 429 767 434.519 767 L 440.038 767 439.769 744.750 L 439.500 722.500 434.250 722.198 L 429 721.895 429 730.948 L 429 740 421.039 740 L 413.078 740 412.789 731.250 L 412.500 722.500 407.462 722.205 C 404.690 722.043, 402.103 722.230, 401.712 722.622 M 448 744.471 L 448 767 461.500 767 L 475 767 475 762.500 L 475 758 467 758 L 459 758 459 753.544 L 459 749.088 466.239 748.794 C 474.054 748.477, 474.904 747.738, 473.570 742.421 C 472.999 740.149, 472.532 740, 465.981 740 L 459 740 459 736 L 459 732 467.055 732 L 475.110 732 474.805 727.250 L 474.500 722.500 461.250 722.221 L 448 721.942 448 744.471 M 482.667 722.667 C 482.300 723.033, 482 733.158, 482 745.167 L 482 767 487.470 767 L 492.940 767 493.220 754.250 L 493.500 741.500 501.924 754.250 L 510.348 767 516.193 767 L 522.038 767 521.769 744.750 L 521.500 722.500 516.912 722.202 C 510.587 721.791, 510.117 722.705, 509.785 736.061 L 509.500 747.500 501.629 735.500 C 497.301 728.900, 493.251 723.169, 492.629 722.765 C 491.214 721.845, 483.565 721.769, 482.667 722.667 M 527 726.976 L 527 732 532.500 732 L 538 732 538 749.500 L 538 767 544 767 L 550 767 550 749.550 L 550 732.100 555.750 731.800 L 561.500 731.500 561.500 727 L 561.500 722.500 544.250 722.226 L 527 721.953 527 726.976 M 566.712 722.622 C 566.320 723.013, 566 733.158, 566 745.167 L 566 767 572.019 767 L 578.038 767 577.769 744.750 L 577.500 722.500 572.462 722.205 C 569.690 722.043, 567.103 722.230, 566.712 722.622 M 597.355 723.384 C 579.671 731.431, 578.563 756.458, 595.500 765.278 C 603.299 769.339, 616.878 767.339, 622.129 761.356 C 624.622 758.516, 627.154 753.058, 626.482 751.971 C 625.016 749.599, 616.388 750.913, 613.157 754 C 605.847 760.986, 595 755.722, 595 745.188 C 595 737.522, 598.942 733.083, 605.795 733.032 C 609.071 733.008, 610.685 733.594, 612.591 735.500 C 615.498 738.407, 627 739.325, 627 736.650 C 627 734.312, 621.345 727.376, 617.501 725 C 612.835 722.117, 602.042 721.251, 597.355 723.384 M 646.667 722.667 C 646.300 723.033, 646 733.158, 646 745.167 L 646 767 651.968 767 L 657.937 767 658.218 755.250 L 658.500 743.500 662.613 755 L 666.726 766.500 671.714 766.797 L 676.702 767.094 680.464 756.537 C 682.532 750.730, 684.624 745.732, 685.113 745.430 C 685.609 745.124, 686 749.758, 686 755.941 L 686 767 691.519 767 L 697.038 767 696.769 744.750 L 696.500 722.500 690.910 722.205 C 684.026 721.841, 684.464 721.324, 677.975 737.500 C 675.107 744.650, 672.531 750.888, 672.252 751.362 C 671.818 752.098, 665.199 737.006, 661.787 727.500 C 661.194 725.850, 660.270 723.938, 659.732 723.250 C 658.711 721.944, 647.873 721.460, 646.667 722.667 M 717.498 723.003 C 717.157 723.555, 715.077 729.068, 712.876 735.253 C 710.676 741.439, 707.328 750.643, 705.438 755.706 C 701.043 767.475, 700.942 767, 707.855 767 C 713.603 767, 713.728 766.941, 714.643 763.750 L 715.575 760.500 724 760.500 L 732.425 760.500 733.357 763.750 C 734.283 766.977, 734.334 767, 740.630 767 L 746.971 767 744.872 761.750 C 743.717 758.862, 740.599 750.359, 737.943 742.854 C 729.943 720.248, 731.105 722, 724.110 722 C 720.814 722, 717.839 722.452, 717.498 723.003 M 751.750 722.572 C 751.337 722.991, 751 733.158, 751 745.167 L 751 767 756.500 767 L 762 767 762 759 C 762 752.841, 762.320 751, 763.389 751 C 764.152 751, 766.650 754.600, 768.939 759 L 773.101 767 779.576 767 L 786.051 767 784.484 763.969 C 783.622 762.302, 781.585 758.838, 779.958 756.273 C 776.356 750.592, 776.302 749.639, 779.502 748.181 C 788.418 744.118, 787.792 729.362, 778.500 724.578 C 774.343 722.438, 753.428 720.870, 751.750 722.572 M 792.712 722.622 C 792.320 723.013, 792 733.158, 792 745.167 L 792 767 797.961 767 L 803.922 767 804.211 758.338 L 804.500 749.676 811 758.318 L 817.500 766.959 824.250 766.980 C 827.962 766.991, 831 766.758, 831 766.461 C 831 766.165, 827.177 761.170, 822.504 755.361 L 814.007 744.799 815.916 742.149 C 816.966 740.692, 820.553 736.125, 823.886 732 C 831.548 722.518, 831.557 722, 824.056 722 L 818.112 722 811.306 731.124 L 804.500 740.248 804 731.374 L 803.500 722.500 798.462 722.205 C 795.690 722.043, 793.103 722.230, 792.712 722.622 M 836.694 722.639 C 836.312 723.021, 836 733.158, 836 745.167 L 836 767 850 767 L 864 767 864 762.500 L 864 758 856 758 L 848 758 848 753.500 L 848 749 855 749 L 862 749 862 744.500 L 862 740 855 740 L 848 740 848 736 L 848 732 856.055 732 L 864.110 732 863.805 727.250 L 863.500 722.500 850.444 722.222 C 843.264 722.070, 837.076 722.257, 836.694 722.639 M 868.690 722.643 C 868.310 723.023, 868 725.283, 868 727.667 L 868 732 874 732 L 880 732 880 749.500 L 880 767 885.500 767 L 891 767 891 749.500 L 891 732 897.055 732 L 903.110 732 902.805 727.250 L 902.500 722.500 885.940 722.227 C 876.832 722.076, 869.069 722.264, 868.690 722.643 M 908.250 722.639 C 907.304 723.038, 907 728.498, 907 745.083 L 907 767 913.019 767 L 919.038 767 918.769 744.750 L 918.500 722.500 914 722.306 C 911.525 722.199, 908.938 722.349, 908.250 722.639 M 926.667 722.667 C 926.300 723.033, 926 733.158, 926 745.167 L 926 767 932 767 L 938 767 938 754.263 L 938 741.526 946.305 754.013 L 954.609 766.500 960.305 766.800 L 966 767.100 966 744.498 L 966 721.895 960.750 722.198 L 955.500 722.500 955.220 735.843 L 954.941 749.186 946.943 736.913 C 942.545 730.163, 938.453 724.046, 937.850 723.320 C 936.726 721.965, 927.885 721.448, 926.667 722.667 M 986.182 723.519 C 968.526 731.189, 966.873 755.626, 983.402 764.622 C 998.096 772.620, 1017.675 762.621, 1016.796 747.568 L 1016.500 742.500 1004.500 742.500 L 992.500 742.500 992.178 745.310 C 991.685 749.607, 993.508 751, 999.622 751 C 1005.371 751, 1005.542 751.119, 1003.988 754.022 C 1001.469 758.730, 990.241 758.273, 986.255 753.301 C 983.388 749.724, 983.113 740.650, 985.772 737.367 C 989.595 732.648, 996.871 731.537, 1001.273 735 C 1004.939 737.884, 1015 737.909, 1015 735.035 C 1015 732.190, 1009.169 725.982, 1004.509 723.865 C 999.675 721.669, 990.826 721.502, 986.182 723.519 M 113 737.052 L 113 742.105 118.231 741.802 C 122.967 741.529, 123.556 741.230, 124.460 738.645 C 125.783 734.867, 122.517 732, 116.889 732 L 113 732 113 737.052 M 762.667 732.667 C 762.300 733.033, 762 735.283, 762 737.667 L 762 742 766.800 742 C 769.440 742, 772.140 741.460, 772.800 740.800 C 774.701 738.899, 774.258 734.208, 772.066 733.035 C 769.906 731.879, 763.698 731.636, 762.667 732.667 M 290.280 742.750 L 288.262 749.500 292.235 749.813 C 294.420 749.985, 296.370 749.963, 296.568 749.766 C 296.957 749.376, 293.103 736, 292.602 736 C 292.435 736, 291.390 739.038, 290.280 742.750 M 721.294 743.503 L 719.181 750 724.077 750 L 728.972 750 726.862 744.250 C 723.919 736.228, 723.670 736.194, 721.294 743.503" stroke="none" fill="#FFFFFF" fill-rule="evenodd"/>
+        <path d="M 529.500 280.938 C 497.076 286.313, 476.465 302.190, 454.781 338.500 C 449.214 347.821, 416.989 405.776, 395.007 446 C 384.296 465.599, 369.339 492.384, 353.855 519.698 C 330.380 561.107, 327.759 568.374, 327.599 592.500 C 327.437 616.978, 333.391 632.455, 348.964 648.043 C 364.553 663.646, 381.202 670.200, 405.500 670.299 C 433.113 670.412, 453.413 661.878, 483.520 637.501 C 509.377 616.563, 525.955 610.199, 547.683 612.869 C 564.641 614.953, 575.573 620.620, 600 639.991 C 625.217 659.988, 642.368 667.709, 667.121 670.205 C 724.417 675.985, 763.134 628.681, 749.527 569.522 C 747.492 560.674, 745.348 555.178, 738.470 541.181 L 729.938 523.818 768.055 448.159 C 789.098 406.390, 807.278 371.492, 808.642 370.250 C 813.465 365.856, 820.526 367.992, 823.040 374.605 C 823.633 376.166, 824 421.789, 824 494.115 C 824 592.637, 824.222 611.525, 825.405 613.800 C 830.934 624.427, 846.462 624.976, 851.330 614.717 C 854.147 608.780, 853.861 373.998, 851.025 364.817 C 841.967 335.490, 803.906 328.380, 784.215 352.336 C 781.783 355.295, 769.653 378.197, 752.964 411.336 C 737.963 441.126, 718.939 478.775, 710.691 495 L 695.693 524.500 700.844 534 C 711.215 553.130, 717.015 565.706, 719.523 574.500 C 727.833 603.647, 716.076 631.059, 692.078 638.494 L 689.655 639.244 691.879 636.372 C 700.996 624.597, 704.732 616.149, 706.083 604.257 C 708.118 586.353, 703.282 571.626, 684.511 538.554 C 677.251 525.763, 676.994 525.296, 661.958 497.500 C 655.710 485.950, 642.968 462.550, 633.642 445.500 C 624.316 428.450, 613.780 409.100, 610.229 402.500 C 592.716 369.958, 580.354 348.242, 577.976 345.844 C 574.614 342.454, 569.049 340.867, 564.750 342.073 C 557.930 343.985, 555.894 346.927, 536.768 382.500 C 529.081 396.798, 520.949 411.707, 501.039 448 C 494.854 459.275, 485.760 475.998, 480.829 485.161 L 471.864 501.823 466.182 504.123 C 463.057 505.388, 457.627 507.917, 454.116 509.744 C 450.604 511.570, 447.505 512.839, 447.229 512.563 C 446.953 512.287, 452.721 501.135, 460.046 487.780 C 467.371 474.426, 476.821 457.200, 481.046 449.500 C 485.270 441.800, 493.329 427.175, 498.954 417 C 504.580 406.825, 516.440 385.225, 525.310 369 C 543.575 335.588, 547.992 329.824, 557.835 326.555 C 566.025 323.834, 576.290 324.658, 582.597 328.542 C 591.377 333.948, 594.295 338.663, 633.586 410.945 C 639.134 421.150, 648.753 438.725, 654.962 450 C 661.171 461.275, 670.738 478.825, 676.223 489 C 681.707 499.175, 686.589 507.917, 687.072 508.426 C 687.590 508.971, 691.806 501.365, 697.329 489.926 C 710.343 462.967, 740.739 400.542, 755.705 370.038 C 767.733 345.523, 768.468 344.306, 775.485 337.289 C 805.641 307.133, 855.941 320.617, 867.659 362 C 869.402 368.153, 869.500 375.084, 869.500 492 L 869.500 615.500 866.909 621 C 855.872 644.427, 822.447 645.338, 811 622.524 L 807.500 615.549 807 508.524 L 806.500 401.500 775.750 462.747 C 758.837 496.433, 745 524.679, 745 525.517 C 745 526.355, 747.092 531.193, 749.649 536.270 C 752.207 541.346, 755.504 548.790, 756.977 552.811 C 760.175 561.541, 759.412 562.156, 769.138 543 L 776.500 528.500 777.072 573.500 C 777.708 623.533, 777.771 624.064, 784.767 637.376 C 791.684 650.539, 802.816 660.136, 817.758 665.818 C 827.289 669.442, 848.179 669.650, 857.760 666.216 C 873.878 660.438, 886.198 649.701, 893.001 635.500 C 900.446 619.959, 900.113 627.212, 899.748 488.500 C 899.385 350.750, 899.928 362.328, 892.951 343.500 C 886.337 325.652, 871.605 309.384, 854 300.490 C 818.686 282.650, 774.520 290.877, 750.370 319.795 C 741.637 330.252, 738.796 335.194, 725.082 363.779 C 718.030 378.475, 707.425 400.400, 701.514 412.500 C 695.603 424.600, 689.922 436.441, 688.891 438.814 C 686.643 443.986, 686.034 443.723, 681.673 435.706 C 679.816 432.293, 673.994 421.625, 668.736 412 C 663.477 402.375, 652.437 382.125, 644.202 367 C 617.375 317.729, 609.953 307.568, 591.675 295.093 C 575.277 283.902, 548.457 277.796, 529.500 280.938 M 225.361 292.899 C 199.203 300.386, 182.014 322.382, 180.283 350.585 C 178.398 381.315, 198.734 409.553, 227.373 415.971 C 230.619 416.699, 272.576 417.594, 279.777 417.089 C 280.764 417.020, 280.991 413.657, 280.777 402.250 L 280.500 387.500 256.500 387 C 229.025 386.428, 226.813 385.860, 218.992 377.376 C 212.447 370.275, 210.532 365.108, 210.515 354.500 C 210.491 340.264, 216.688 329.774, 228.577 323.923 L 233.500 321.500 290.750 321.219 C 322.238 321.064, 348 321.208, 348 321.539 C 348 321.870, 346.265 324.247, 344.144 326.821 C 334.563 338.445, 328.871 351.555, 327.030 366.230 C 325.838 375.740, 325.573 541.002, 326.750 540.997 C 327.481 540.994, 331.327 534.434, 343.164 513 L 348.962 502.500 348.996 435.500 C 349.033 360.892, 349.022 361.043, 355.714 349.022 C 362.535 336.768, 374.779 327.469, 389.500 323.362 C 394.227 322.043, 401.385 321.595, 423.238 321.251 L 450.975 320.813 456.106 313.657 C 458.928 309.720, 464.661 303.012, 468.845 298.750 L 476.453 291 353.977 291.071 C 240.271 291.137, 231.060 291.268, 225.361 292.899 M 517 315.528 C 498.334 325.494, 488.355 338.561, 461.272 388.500 C 453.662 402.533, 438.021 430.910, 421.036 461.500 C 375.533 543.450, 373.632 547.018, 371.423 554.617 C 365.245 575.867, 380.700 595.021, 403.020 593.777 C 413.398 593.198, 419.404 590.201, 435.319 577.662 C 474.063 547.137, 503.892 535.509, 543 535.686 C 560.740 535.766, 572.699 537.791, 589.850 543.617 C 595.543 545.551, 600.330 546.991, 600.489 546.817 C 600.647 546.642, 598.273 541.881, 595.213 536.237 C 588.910 524.611, 589.577 525.025, 571.052 521.245 C 557.697 518.520, 522.068 518.842, 508.312 521.813 C 480.937 527.724, 458.507 539.223, 423.678 565.200 C 409.424 575.831, 406.694 577.323, 401.500 577.323 C 393.173 577.323, 387.011 571.329, 387.004 563.221 C 386.999 558.319, 387.951 556.294, 404.029 527 C 410.217 515.725, 423.145 492.100, 432.758 474.500 C 442.371 456.900, 452.153 439.125, 454.497 435 C 456.841 430.875, 463.702 418.500, 469.745 407.500 C 475.788 396.500, 483.103 383.225, 486 378 C 488.897 372.775, 495.745 360.175, 501.218 350 C 513.557 327.060, 514.230 325.938, 520.266 318.250 C 525.938 311.025, 525.741 310.861, 517 315.528 M 390.500 336.386 C 374.755 340.215, 362.624 353.442, 359.965 369.679 C 358.847 376.505, 358.645 482.003, 359.750 481.994 C 360.624 481.986, 361.343 480.773, 373.127 459.431 L 382 443.362 382 407.792 C 382 374.273, 382.110 372.085, 383.910 369.861 C 385.782 367.547, 386.205 367.494, 405.361 367.191 C 422.742 366.916, 424.963 366.693, 425.444 365.175 C 425.742 364.236, 429.549 357.063, 433.904 349.234 L 441.823 335 418.661 335.085 C 404.181 335.138, 393.626 335.626, 390.500 336.386 M 233.984 340.863 C 224.435 345.969, 224.072 360.495, 233.321 367.395 C 236.009 369.400, 237.486 369.515, 264.545 369.807 L 292.947 370.114 293.223 492.807 L 293.500 615.500 295.864 622.500 C 305.357 650.611, 323.790 666.600, 351.250 670.545 C 356.170 671.252, 358.016 669.775, 353.860 668.456 C 350.694 667.451, 335.319 652.340, 331.011 646 C 320.028 629.837, 314.798 613.201, 314.877 594.690 C 314.901 589.086, 315.287 534.100, 315.735 472.500 L 316.549 360.500 318.835 352.571 C 320.093 348.210, 321.544 343.852, 322.061 342.887 C 322.577 341.921, 323 340.652, 323 340.066 C 323 339.328, 309.837 339, 280.234 339 C 240.430 339, 237.228 339.129, 233.984 340.863 M 563.032 397.607 L 558.565 406.190 560.613 409.845 C 565.170 417.978, 588.557 460.642, 595.223 472.984 C 597.456 477.118, 602.989 487.250, 607.518 495.500 C 612.048 503.750, 621.485 521.075, 628.489 534 C 635.493 546.925, 643.820 562.225, 646.993 568 C 658.023 588.076, 659.362 591.154, 659.385 596.500 C 659.421 605, 654.464 610.088, 646.081 610.153 C 640.053 610.199, 637.461 608.851, 624.186 598.759 C 580.732 565.723, 549.817 558.265, 507.349 570.572 C 491.405 575.192, 475.114 584.469, 454 600.949 C 431.682 618.370, 421.572 623.027, 404.481 623.761 C 389.114 624.421, 377.549 621.237, 365.309 612.976 C 359.503 609.058, 358.866 609.816, 362.360 616.489 C 368.818 628.823, 382.700 638.060, 397.842 640.098 C 416.640 642.628, 434.678 636.764, 454.500 621.679 C 479.841 602.395, 485.204 598.597, 492.309 594.900 C 507.106 587.202, 526.562 582, 540.559 582 C 566.155 582, 587.636 591.204, 617.586 615.004 C 621.625 618.214, 627.841 622.273, 631.400 624.025 C 649.796 633.082, 673.237 621.332, 676.338 601.500 C 677.921 591.373, 674.710 583.182, 655.563 548.500 C 650.704 539.700, 642.805 525.300, 638.009 516.500 C 633.212 507.700, 626.682 495.775, 623.496 490 C 615.642 475.764, 609.081 463.759, 597.810 443 C 592.585 433.375, 586.066 421.450, 583.325 416.500 C 580.584 411.550, 576.159 403.337, 573.493 398.250 C 570.827 393.163, 568.388 389.005, 568.073 389.012 C 567.758 389.018, 565.490 392.886, 563.032 397.607 M 539.665 440.250 C 538.905 441.488, 536.114 446.550, 533.462 451.500 C 530.811 456.450, 525.122 467.011, 520.820 474.969 C 512.220 490.881, 511.988 491.530, 515.250 490.574 C 519.485 489.333, 553.415 488.788, 561.484 489.832 C 565.876 490.400, 569.604 490.729, 569.770 490.564 C 569.935 490.398, 565.949 482.666, 560.912 473.381 C 555.875 464.097, 549.519 452.337, 546.788 447.250 C 541.216 436.872, 541.542 437.192, 539.665 440.250" stroke="none" fill="#6366F1" fill-rule="evenodd"/>
+      </svg>
+      <div class="text">
+        <div class="title-line"><strong>Truly Authentic Marketing</strong><span class="product">Product Champ</span></div>
+        <div class="tag-line">The AI Business Growth Command Council</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · LESSON 1 OPENER · recap + today's hire -->
+<section class="slide lead" data-title="Lesson 1 opener — yesterday + today">
+  <div class="slide-content">
+    <div class="lesson-marker reveal"><span class="day">Lesson 01</span><span class="pipe">·</span><span>Why These Hires</span><span class="pipe">·</span><span class="duration">~10 min</span></div>
+    <h1 class="display reveal" style="max-width: 22ch;">Yesterday: <em>Brain</em> + <em>Chief of Staff.</em> Today: <span class="hl">Hire #1.</span></h1>
+    <h2 class="reveal" style="max-width: 46ch;">Before we run the hire, we earn it. Five minutes on Toni's memo — why Chief of Staff picked Content Designer first.</h2>
+    <div class="agent-lineup reveal" style="margin-top: 2.2rem;">
+      <div class="agent-badge"><canvas data-agent="chief-of-staff" width="80" height="80" style="width:64px;height:64px;"></canvas><span class="name">Chief of Staff</span><span class="role">Orchestrator</span></div>
+      <div class="agent-badge" style="opacity: 0.4;"><canvas data-agent="content-designer" width="80" height="80" style="width:64px;height:64px;"></canvas><span class="name">Content Designer</span><span class="role">— hired today</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · The Hire Recommendations memo (Toni's example, recap) -->
+<section class="slide" data-title="Hire Recommendations memo — recap">
+  <div class="slide-content" style="justify-content: center; max-width: min(85vw, 1000px); margin: 0 auto;">
+    <h3 class="section-label reveal" style="color: var(--teal);">Toni's memo · saved Day 1</h3>
+    <h1 class="display reveal" style="font-size: clamp(1.8rem, 4.2vw, 3rem); max-width: 22ch;">Two hires, in <span class="teal"><em>order.</em></span></h1>
+    <div class="hire-memo reveal">
+      <div class="memo-head"><span class="dot"></span>decisions/hire-recommendations.md · for Plant Based Tone</div>
+      <div class="memo-title">Two highest-leverage hires, in order:</div>
+      <div class="memo-row">
+        <span class="badge">Hire #1</span>
+        <div>
+          <div class="role"><canvas data-agent="content-designer" width="28" height="28" style="width:18px;height:18px; vertical-align: middle; margin-right: 6px;"></canvas>Content Designer</div>
+          <div class="why" style="margin-top: 4px;">Q07 (writing recipes), Q08 (out-of-date guides), Q11 (content cadence) all point here. Biggest time eater first.</div>
+        </div>
+        <span class="order">Day 02 · Today</span>
+      </div>
+      <div class="memo-row">
+        <span class="badge">Hire #2</span>
+        <div>
+          <div class="role"><canvas data-agent="web-designer" width="28" height="28" style="width:18px;height:18px; vertical-align: middle; margin-right: 6px;"></canvas>Web Designer</div>
+          <div class="why" style="margin-top: 4px;">Q08 (social link gaps on the website), Q09 (visibility gap on social/web). Visibility gap second.</div>
+        </div>
+        <span class="order">Day 03 · Tomorrow</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · Diagnostic-to-Hire chain (Q→Pattern→Role) -->
+<section class="slide" data-title="Diagnostic-to-Hire chain">
+  <div class="slide-content" style="justify-content: center; max-width: min(85vw, 1100px); margin: 0 auto;">
+    <h3 class="section-label reveal">The logic behind the memo</h3>
+    <h1 class="display reveal" style="font-size: clamp(1.8rem, 4.2vw, 3rem); max-width: 26ch;">Three answers. <em>One pattern.</em> One hire.</h1>
+    <div class="chain-row reveal">
+      <div class="chain-cell q">
+        <div class="cc-head">Q07 · Q08 · Q11</div>
+        <div class="cc-body">"Writing recipes." "Stale wellness guides." "Content cadence and social presence — those would change everything."</div>
+      </div>
+      <div class="chain-arrow reveal">→</div>
+      <div class="chain-cell p">
+        <div class="cc-head">Pattern</div>
+        <div class="cc-body">Three of five diagnostic answers point at <span class="hl-static">content production.</span> Biggest time eater. No exceptions.</div>
+      </div>
+      <div class="chain-arrow reveal">→</div>
+      <div class="chain-cell r">
+        <div class="cc-head">Hire #1</div>
+        <div class="cc-body"><canvas data-agent="content-designer" width="22" height="22" style="width:14px;height:14px; vertical-align: middle; margin-right: 6px;"></canvas>Content Designer. Recipes, wellness guides, social, workshops — in Toni's voice.</div>
+      </div>
+    </div>
+    <p class="reveal" style="font-family: var(--font-body); color: var(--text-dim); margin-top: 1.6rem; max-width: 50ch; line-height: 1.6; text-align: center; margin-left: auto; margin-right: auto; font-size: clamp(0.95rem, 1.15vw, 1.05rem);">The diagnostic isn't a quiz. It's pattern recognition. Three answers in the same direction = your highest-leverage hire.</p>
+  </div>
+</section>
+
+<!-- 05 · Today's deliverable -->
+<section class="slide lead" data-title="Today's deliverable">
+  <div class="slide-content">
+    <h3 class="section-label reveal" style="color: var(--teal);">By minute 60</h3>
+    <h1 class="display reveal" style="max-width: 24ch;">Five brand-voice <span class="teal"><em>content pieces</em></span> + one workshop outline. In Toni's voice. In her Brain.</h1>
+    <div class="deliverable-card reveal">
+      <div class="deliv-head">Day 02 deliverable</div>
+      <div class="deliv-line">A working Content Designer with 5 fresh recipes saved to <code style="font-family: var(--font-mono); color: var(--accent); background: rgba(99,102,241,0.12); padding: 1px 6px; border-radius: 4px; font-size: 0.85em;">brain/content/recipes/</code> and 1 stress-management workshop outline at <code style="font-family: var(--font-mono); color: var(--accent); background: rgba(99,102,241,0.12); padding: 1px 6px; border-radius: 4px; font-size: 0.85em;">brain/content/workshops/</code>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== LESSON 2 · Hire Content Designer via /hire-employee ============== -->
+
+<!-- 06 · LESSON 2 OPENER · how /hire-employee works -->
+<section class="slide lead" data-title="Lesson 2 opener — how /hire-employee works">
+  <div class="slide-content">
+    <div class="lesson-marker reveal"><span class="day">Lesson 02</span><span class="pipe">·</span><span>Hire Content Designer</span><span class="pipe">·</span><span class="duration">~20 min</span></div>
+    <h1 class="display reveal" style="max-width: 24ch;">How <span class="hl"><em>/hire-employee</em></span> works under the hood.</h1>
+    <h2 class="reveal" style="max-width: 48ch;">Brain context plus four questions equals a working Specialist. Seven minutes from "I want a Content Designer" to a CLAUDE.md you can read out loud.</h2>
+  </div>
+</section>
+
+<!-- 07 · ISO slide · The /hire-employee 4-step pipeline -->
+<section class="slide iso-slide" data-title="The /hire-employee pipeline">
+  <div class="slide-content">
+    <div class="iso-text">
+      <h3 class="kicker reveal">Fig. 05 · The pipeline</h3>
+      <h2 class="scene-title reveal">Four steps. <em>Seven minutes.</em></h2>
+      <p class="body-text reveal">Same pattern every time. The role changes. The pipeline doesn't.</p>
+      <ul class="fine-list reveal">
+        <li><span class="k">01 · Read</span><span class="v">Brain context</span></li>
+        <li><span class="k">02 · Ask</span><span class="v">4 clarifying Qs</span></li>
+        <li><span class="k">03 · Generate</span><span class="v">Specialist folder</span></li>
+        <li class="teal"><span class="k">04 · Output</span><span class="v">CLAUDE.md ready</span></li>
+      </ul>
+    </div>
+    <div class="iso-stage reveal">
+      <div class="scene-pipeline">
+        <div class="pipe-rail">
+          <div class="pipe-step active s1">
+            <div class="step-num">01</div>
+            <div class="step-text">Read the Brain<span class="small">business · voice · diagnostic</span></div>
+          </div>
+          <div class="pipe-step active s2">
+            <div class="step-num">02</div>
+            <div class="step-text">Ask 4 clarifying questions<span class="small">role-specific · in plain English</span></div>
+          </div>
+          <div class="pipe-step active s3">
+            <div class="step-num">03</div>
+            <div class="step-text">Generate the Specialist folder<span class="small">CLAUDE.md · context · starter skills</span></div>
+          </div>
+          <div class="pipe-step active s4">
+            <div class="step-num">04</div>
+            <div class="step-text">Read it on camera<span class="small">"that's exactly my voice"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · Hands-on: Run /hire-employee Content Designer -->
+<section class="slide" data-title="Hands-on — run /hire-employee">
+  <div class="slide-content" style="justify-content: center; max-width: min(85vw, 1000px); margin: 0 auto;">
+    <h3 class="section-label reveal">Hands-on · One command</h3>
+    <h1 class="display reveal" style="font-size: clamp(2rem, 4.8vw, 3.6rem); max-width: 22ch;">Run <em>/hire-employee.</em></h1>
+    <div class="code-block reveal">
+      <div class="cb-head">In Claude Code · with Chief of Staff installed</div>
+      <div><span class="cb-prompt">&gt;</span> <span class="cb-cmd">/hire-employee</span> <span class="cb-flag">Content Designer</span></div>
+    </div>
+    <p class="reveal" style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase; margin-top: 1.4rem; text-align: center;">Run this for whatever your memo recommended. The mechanics are identical for any role.</p>
+  </div>
+</section>
+
+<!-- 09 · ISO slide · Chief of Staff reads the Brain (file reads visible) -->
+<section class="slide iso-slide" data-title="Chief of Staff reads the Brain">
+  <div class="slide-content">
+    <div class="iso-text">
+      <h3 class="kicker reveal">Step 1 of 4 · ~90 sec</h3>
+      <h2 class="scene-title reveal">Chief of Staff reads <em>your Brain.</em></h2>
+      <p class="body-text reveal">No generic templates. Every question Chief of Staff asks next is shaped by what's already in <code style="font-family: var(--font-mono); color: var(--accent); background: rgba(99,102,241,0.12); padding: 2px 6px; border-radius: 4px;">brain/business/</code>.</p>
+      <ul class="fine-list reveal">
+        <li><span class="k">Reads</span><span class="v">5 Brain pages</span></li>
+        <li><span class="k">For</span><span class="v">voice + boundaries + ICA</span></li>
+        <li class="teal"><span class="k">Result</span><span class="v">tuned to your business</span></li>
+      </ul>
+    </div>
+    <div class="iso-stage reveal">
+      <div class="brain-trace" style="margin: 0; max-width: 100%;">
+        <div class="bt-head"><span class="dot"></span>chief-of-staff · reading brain</div>
+        <div class="bt-row"><span class="verb">READ</span><span class="file">brain/business/about.md</span></div>
+        <div class="bt-row"><span class="verb">READ</span><span class="file">brain/business/voice.md</span></div>
+        <div class="bt-row"><span class="verb">READ</span><span class="file">brain/business/diagnostic.md</span></div>
+        <div class="bt-row"><span class="verb">READ</span><span class="file">brain/business/boundaries.md</span></div>
+        <div class="bt-row streaming"><span class="verb">READ</span><span class="file">brain/customers/ica.md</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · Toni's 4 clarifying-question answers -->
+<section class="slide" data-title="Toni's 4 clarifying answers">
+  <div class="slide-content" style="justify-content: center; max-width: min(85vw, 1000px); margin: 0 auto;">
+    <h3 class="section-label reveal">Step 2 of 4 · ~3 min</h3>
+    <h1 class="display reveal" style="font-size: clamp(1.8rem, 4.2vw, 3rem); max-width: 24ch;">Four questions. <em>Toni's answers.</em></h1>
+    <div class="qa-dialog reveal">
+      <div class="qa-head"><span class="dot"></span><canvas data-agent="chief-of-staff" width="20" height="20" style="width:14px;height:14px;"></canvas>Chief of Staff · clarifying questions for Content Designer</div>
+      <div class="qa-row">
+        <span class="ask">Q1 · Asks</span>
+        <div class="qtext">"What kinds of content?"</div>
+        <span class="ans">Toni</span>
+        <div class="atext">Recipes, wellness guides, occasional workshops.</div>
+      </div>
+      <div class="qa-row">
+        <span class="ask">Q2 · Asks</span>
+        <div class="qtext">"Cadence?"</div>
+        <span class="ans">Toni</span>
+        <div class="atext">2 recipes a week. 1 wellness guide a month. Workshop quarterly.</div>
+      </div>
+      <div class="qa-row">
+        <span class="ask">Q3 · Asks</span>
+        <div class="qtext">"Anything off-limits?"</div>
+        <span class="ans">Toni</span>
+        <div class="atext">Don't promise medical results. I'm not a doctor.</div>
+      </div>
+      <div class="qa-row">
+        <span class="ask">Q4 · Asks</span>
+        <div class="qtext">"First piece you want?"</div>
+        <span class="ans">Toni</span>
+        <div class="atext">5 fresh recipes plus 1 workshop outline on stress management.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · ISO slide · Generated content-designer/ folder -->
+<section class="slide iso-slide" data-title="Generated content-designer folder">
+  <div class="slide-content">
+    <div class="iso-text">
+      <h3 class="kicker reveal">Step 3 of 4 · ~3 min</h3>
+      <h2 class="scene-title reveal">A new folder. <em>Your Specialist.</em></h2>
+      <p class="body-text reveal">Chief of Staff generates the folder structure. CLAUDE.md is the personality. Starter skills are the actions. All voice-tuned.</p>
+      <ul class="fine-list reveal">
+        <li><span class="k">Personality</span><span class="v">CLAUDE.md</span></li>
+        <li><span class="k">Context</span><span class="v">brand voice + boundaries</span></li>
+        <li class="teal"><span class="k">Starter skills</span><span class="v">3 · ready to run</span></li>
+      </ul>
+    </div>
+    <div class="iso-stage reveal">
+      <div class="scene-folder">
+        <div class="folder-tree">
+          <div class="ft-root"><canvas data-agent="content-designer" width="20" height="20" style="width:16px;height:16px;"></canvas>content-designer/</div>
+          <span class="ft-row lit"><span class="ft-meta">CLAUDE.md</span><span class="ft-comment">role + voice + boundaries</span></span>
+          <span class="ft-row"><span class="ft-folder">.claude/</span></span>
+          <span class="ft-row indent"><span class="ft-folder">skills/</span><span class="ft-comment">starter actions</span></span>
+          <span class="ft-row indent" style="padding-left: 42px;"><span class="ft-file">write-blog-post/</span></span>
+          <span class="ft-row indent" style="padding-left: 42px;"><span class="ft-file">write-lead-magnet/</span></span>
+          <span class="ft-row indent" style="padding-left: 42px;"><span class="ft-file">write-social-caption/</span></span>
+          <span class="ft-row"><span class="ft-folder">workspace/</span><span class="ft-comment">drafts go here</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · CLAUDE.md mock — voice + boundaries inherited -->
+<section class="slide" data-title="content-designer CLAUDE.md preview">
+  <div class="slide-content" style="justify-content: center; max-width: min(85vw, 900px); margin: 0 auto;">
+    <h3 class="section-label reveal">Step 4 of 4 · ~2 min</h3>
+    <h1 class="display reveal" style="font-size: clamp(1.8rem, 4.2vw, 3rem); max-width: 26ch;">Toni reads <em>content-designer/CLAUDE.md.</em></h1>
+    <div class="claude-mock reveal">
+      <div class="cm-head">
+        <span class="dot"></span>
+        <canvas data-agent="content-designer" width="28" height="28" style="width:14px;height:14px;"></canvas>
+        content-designer/CLAUDE.md
+      </div>
+      <div class="cm-row"><span class="k">Role</span><span class="v">Content Designer for Plant Based Tone.</span></div>
+      <div class="cm-row"><span class="k">Voice</span><span class="v">Casual but warm. Friend who knows what they're talking about.</span></div>
+      <div class="cm-row"><span class="k">Words</span><span class="v">"Real food, real calm, real you" · avoid "AI" + "synergy".</span></div>
+      <div class="cm-row"><span class="k">ICA</span><span class="v">Women 25–45 starting plant-based, overwhelmed by meal planning.</span></div>
+      <div class="cm-row"><span class="k">Off-limits</span><span class="v">No medical claims. No fake testimonials. No posting as Toni.</span></div>
+      <div class="cm-row"><span class="k">First task</span><span class="v">5 recipes + 1 stress-management workshop outline<span class="cur"></span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · Lesson 2 CTA -->
+<section class="slide lead" data-title="Lesson 2 CTA — run YOUR /hire-employee">
+  <div class="slide-content">
+    <h3 class="section-label reveal">Your turn</h3>
+    <h1 class="display reveal" style="max-width: 22ch;">Run <em>/hire-employee</em> for YOUR top recommendation.</h1>
+    <h2 class="reveal" style="max-width: 48ch;">Answer the four questions in plain English. Read the generated CLAUDE.md out loud. If it sounds like you, ship it.</h2>
+    <div class="cta-block reveal">
+      <span class="cta-dot"></span>
+      <span>Pause · run · read · come back</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============== LESSON 3 · First Real Task ============== -->
+
+<!-- 14 · LESSON 3 OPENER · first real task -->
+<section class="slide lead" data-title="Lesson 3 opener — first real task">
+  <div class="slide-content">
+    <div class="lesson-marker reveal"><span class="day">Lesson 03</span><span class="pipe">·</span><span>First Real Task</span><span class="pipe">·</span><span class="duration">~30 min</span></div>
+    <h1 class="display reveal" style="max-width: 24ch;">Give your Specialist a <span class="hl"><em>real first task.</em></span></h1>
+    <h2 class="reveal" style="max-width: 48ch;">Five deliverables in their first hour. No tutorials. No "let me check your settings." Just real work, real output, in your voice.</h2>
+  </div>
+</section>
+
+<!-- 15 · The task brief -->
+<section class="slide" data-title="The task brief">
+  <div class="slide-content" style="justify-content: center; max-width: min(85vw, 1000px); margin: 0 auto;">
+    <h3 class="section-label reveal">The brief · plain English</h3>
+    <h1 class="display reveal" style="font-size: clamp(1.8rem, 4.2vw, 3rem); max-width: 26ch;">Toni types <em>one prompt.</em></h1>
+    <div class="claude-mock reveal" style="max-width: 640px;">
+      <div class="cm-head">
+        <span class="dot"></span>
+        <span style="color: var(--text-paper);">Toni · to Content Designer</span>
+      </div>
+      <div class="cm-row"><span class="k">Task</span><span class="v" style="font-family: var(--font-body); font-weight: 500; font-size: 13px; color: var(--text-paper); line-height: 1.5;">"Write me 5 fresh vegan recipes in my voice. Save them to brain/content/recipes/. And write me a 1-page wellness workshop outline on stress management."</span></div>
+    </div>
+    <p class="reveal" style="font-family: var(--font-body); color: var(--text-dim); margin-top: 1.4rem; max-width: 50ch; line-height: 1.6; text-align: center; margin-left: auto; margin-right: auto; font-size: clamp(0.95rem, 1.15vw, 1.05rem);">No fluff. No "please." Name the deliverables. Name the location. Done.</p>
+  </div>
+</section>
+
+<!-- 16 · The 5 recipes appearing on screen -->
+<section class="slide" data-title="The 5 recipes — files saved">
+  <div class="slide-content" style="justify-content: center; max-width: min(85vw, 1000px); margin: 0 auto;">
+    <h3 class="section-label reveal" style="color: var(--teal);">8–10 minutes later</h3>
+    <h1 class="display reveal" style="font-size: clamp(1.8rem, 4.2vw, 3rem); max-width: 24ch;">Five recipes. <span class="teal"><em>One workshop.</em></span></h1>
+    <p class="reveal" style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase; margin-top: 0.4rem; text-align: center;">Saved to brain/content/ · ready to publish</p>
+    <div class="recipe-list reveal">
+      <div class="recipe-tile">
+        <span class="r-num">01</span>
+        <span class="r-file">roasted-rainbow-bowl.md</span>
+        <span class="r-tag">Recipe</span>
+        <span class="r-pulse"></span>
+      </div>
+      <div class="recipe-tile">
+        <span class="r-num">02</span>
+        <span class="r-file">tahini-banana-overnight-oats.md</span>
+        <span class="r-tag">Recipe</span>
+        <span class="r-pulse"></span>
+      </div>
+      <div class="recipe-tile">
+        <span class="r-num">03</span>
+        <span class="r-file">creamy-plant-based-pasta.md</span>
+        <span class="r-tag">Recipe</span>
+        <span class="r-pulse"></span>
+      </div>
+      <div class="recipe-tile">
+        <span class="r-num">04</span>
+        <span class="r-file">ginger-lemon-immune-tonic.md</span>
+        <span class="r-tag">Recipe</span>
+        <span class="r-pulse"></span>
+      </div>
+      <div class="recipe-tile">
+        <span class="r-num">05</span>
+        <span class="r-file">dark-chocolate-tahini-bites.md</span>
+        <span class="r-tag">Recipe</span>
+        <span class="r-pulse"></span>
+      </div>
+      <div class="recipe-tile workshop">
+        <span class="r-num">+1</span>
+        <span class="r-file">workshops/stress-management.md</span>
+        <span class="r-tag">Workshop outline</span>
+        <span class="r-pulse"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 · Sample recipe quote in Toni's voice -->
+<section class="slide lead" data-title="Sample recipe in Toni's voice">
+  <div class="slide-content">
+    <h3 class="section-label reveal">A sample · roasted-rainbow-bowl.md</h3>
+    <h1 class="display reveal" style="max-width: 22ch;">Voice <em>landed.</em></h1>
+    <div class="proof-quote reveal" style="margin-top: 1.6rem;">
+      <div class="pq-head"><span class="dot"></span>Content Designer · opening line</div>
+      <div class="pq-text">Real food, real calm, real you. This bowl is everything I want on a Tuesday — quick, colorful, and zero meal-prep stress.</div>
+      <div class="pq-attr">Voice match · <span class="name">Toni's "Real food, real calm, real you" anchor + Q06 concise tone</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 · The workshop outline (saved file) -->
+<section class="slide iso-slide" data-title="Workshop outline saved">
+  <div class="slide-content">
+    <div class="iso-text">
+      <h3 class="kicker reveal">Bonus deliverable</h3>
+      <h2 class="scene-title reveal">Workshop outline. <em>Saved.</em></h2>
+      <p class="body-text reveal">One page. Stress management. Toni's quarterly workshop slot is now staffed for the next 90 days — without her writing a word.</p>
+      <ul class="fine-list reveal">
+        <li><span class="k">File</span><span class="v">workshops/stress-management.md</span></li>
+        <li><span class="k">Length</span><span class="v">1 page · 5-section outline</span></li>
+        <li class="teal"><span class="k">Status</span><span class="v">ready · just needs date</span></li>
+      </ul>
+    </div>
+    <div class="iso-stage reveal">
+      <div class="scene-folder">
+        <div class="folder-tree">
+          <div class="ft-root"><canvas data-agent="content-designer" width="20" height="20" style="width:16px;height:16px;"></canvas>brain/content/</div>
+          <span class="ft-row"><span class="ft-folder">recipes/</span><span class="ft-comment">5 files saved</span></span>
+          <span class="ft-row indent"><span class="ft-file">roasted-rainbow-bowl.md</span></span>
+          <span class="ft-row indent"><span class="ft-file">tahini-banana-overnight-oats.md</span></span>
+          <span class="ft-row indent"><span class="ft-file">creamy-plant-based-pasta.md</span></span>
+          <span class="ft-row indent"><span class="ft-file">ginger-lemon-immune-tonic.md</span></span>
+          <span class="ft-row indent"><span class="ft-file">dark-chocolate-tahini-bites.md</span></span>
+          <span class="ft-row lit"><span class="ft-folder">workshops/</span><span class="ft-comment">new · saved today</span></span>
+          <span class="ft-row indent" style="padding-left: 42px;"><span class="ft-file">stress-management.md</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 · Toni's proof-of-voice moment -->
+<section class="slide lead" data-title="Toni's proof-of-voice moment">
+  <div class="slide-content">
+    <h3 class="section-label reveal" style="color: var(--teal);">The proof-of-voice moment</h3>
+    <h1 class="display reveal" style="max-width: 24ch;">Toni reads it. <span class="teal"><em>Toni reacts.</em></span></h1>
+    <div class="proof-quote reveal">
+      <div class="pq-head"><span class="dot"></span>Toni · on camera · reading roasted-rainbow-bowl.md</div>
+      <div class="pq-text">This is exactly how I'd write this.</div>
+      <div class="pq-attr">— <span class="name">Toni Iglesia</span> · Plant Based Tone · Day 02 · Minute 58</div>
+    </div>
+    <h2 class="reveal" style="max-width: 46ch; margin-top: 1.6rem;">That's the bar. If your Specialist's first piece doesn't pass it, fix the Brain — not the prompt.</h2>
+  </div>
+</section>
+
+<!-- 20 · The compounding value preview -->
+<section class="slide lead" data-title="Compounding value — Day 3 preview">
+  <div class="slide-content">
+    <h3 class="section-label reveal">What just happened</h3>
+    <h1 class="display reveal" style="max-width: 24ch;">Toni's Brain just <em>got smarter.</em></h1>
+    <h2 class="reveal" style="max-width: 50ch;">Tomorrow's Web Designer will read these recipes — and write web copy that matches them. Specialists feed each other. Compounding starts here.</h2>
+    <div class="agent-lineup reveal" style="margin-top: 2rem;">
+      <div class="agent-badge"><canvas data-agent="content-designer" width="80" height="80" style="width:64px;height:64px;"></canvas><span class="name">Content Designer</span><span class="role">Today · hired</span></div>
+      <div class="agent-badge" style="opacity: 0.5;"><canvas data-agent="web-designer" width="80" height="80" style="width:64px;height:64px;"></canvas><span class="name">Web Designer</span><span class="role">Tomorrow · reads today's work</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 · Lesson 3 CTA -->
+<section class="slide lead" data-title="Lesson 3 CTA — give YOUR Specialist their task">
+  <div class="slide-content">
+    <h3 class="section-label reveal">Your turn</h3>
+    <h1 class="display reveal" style="max-width: 24ch;">Give your Content Designer their <em>first task.</em></h1>
+    <h2 class="reveal" style="max-width: 48ch;">Real work. Real output. One prompt — name the deliverables, name the location. Then read what they ship out loud.</h2>
+    <div class="cta-block reveal">
+      <span class="cta-dot"></span>
+      <span>Pause · prompt · read · show up tomorrow ready for hire #3</span>
+    </div>
+  </div>
+</section>
+
+<!-- 22 · End of Day 2 transition -->
+<section class="slide lead" data-title="Day 2 done — tomorrow hire #3">
+  <div class="slide-content">
+    <h3 class="kicker reveal" style="color: var(--teal);">Day 02 · done</h3>
+    <h1 class="display reveal" style="max-width: 22ch;">Three things you <span class="teal"><em>now have.</em></span></h1>
+    <div class="wrap-stack reveal">
+      <div class="wrap-tile t1">
+        <div class="wt-num">Hire 01</div>
+        <div class="wt-name">Content Designer</div>
+        <div class="wt-line">Voice-tuned. Boundary-aware. Folder lives at content-designer/.</div>
+      </div>
+      <div class="wrap-tile t2">
+        <div class="wt-num">Asset 01</div>
+        <div class="wt-name">5 Recipes</div>
+        <div class="wt-line">Brand voice. Saved to brain/content/recipes/. Ready to publish.</div>
+      </div>
+      <div class="wrap-tile t3">
+        <div class="wt-num">Asset 02</div>
+        <div class="wt-name">Workshop Outline</div>
+        <div class="wt-line">Stress management · 1 page · in brain/content/workshops/.</div>
+      </div>
+    </div>
+    <h2 class="reveal" style="margin-top: 1.6rem;">Tomorrow: <em>Hire #3.</em> Web Designer. Plus your printable Agent Map and the Road Ahead.</h2>
+    <div class="fine reveal">Continue to Day 03 · same time tomorrow</div>
+  </div>
+</section>
+
+
+<!-- =================== END SLIDES SECTION =================== -->
+
+<script>
+/* ================================================================
+   SLIDE CONTROLLER · do not modify
+   Keyboard: ↑↓←→ / Space / PgUp/PgDn / j/k / Home/End
+   Touch swipe, click nav dots
+   ================================================================ */
+/* ================================================================
+   BG_CONFIG · tune background prominence here · no surgery needed
+   ---
+   Everything about the hex mesh + agent scatter + cursor glow
+   intensity lives in one place. Halve a value = half as loud.
+   ================================================================ */
+const BG_CONFIG = {
+  hexAlphaMax:       0.10,  // indigo on light · 0 (invisible) → 0.18 (loud)
+  hexCellSize:       22,    // 12 (dense) → 40 (sparse) · bigger = sparser grid
+  hexLineWidth:      0.6,   // 0.3 (thin) → 1 (thick)
+  hexFadeExponent:   2,     // 1 (even) → 4 (sharp vignette) · higher = darker edges
+  hexRotationSpeed:  0.0001, // rads/frame
+  scatterCount:      10,    // 0 → 20 · how many agents to scatter
+  scatterOpacityMin: 0.06,
+  scatterOpacityMax: 0.12,
+  cursorGlowAlpha:   0.06,  // 0 → 0.15 · indigo cursor halo intensity on light
+};
+
+class SlidePresentation {
+  constructor() {
+    this.slides = Array.from(document.querySelectorAll('.slide'));
+    this.navDots = document.getElementById('navDots');
+    this.progressBar = document.getElementById('progressBar');
+    this.currSpan = document.getElementById('slideCurr');
+    this.totalSpan = document.getElementById('slideTotal');
+    this.navPrev = document.getElementById('navPrev');
+    this.navNext = document.getElementById('navNext');
+    this.current = 0;
+    this.totalSpan.textContent = String(this.slides.length).padStart(2, '0');
+    this.buildNavDots();
+    this.attachObserver();
+    this.attachKeyboard();
+    this.attachTouch();
+    this.attachScroll();
+    this.attachArrows();
+  }
+
+  attachArrows() {
+    if (this.navPrev) this.navPrev.addEventListener('click', () => this.goTo(this.current - 1));
+    if (this.navNext) this.navNext.addEventListener('click', () => this.goTo(this.current + 1));
+  }
+
+  updateArrowState() {
+    if (this.navPrev) this.navPrev.disabled = this.current <= 0;
+    if (this.navNext) this.navNext.disabled = this.current >= this.slides.length - 1;
+  }
+
+  buildNavDots() {
+    this.navDots.innerHTML = '';
+    this.slides.forEach((slide, i) => {
+      const btn = document.createElement('button');
+      btn.setAttribute('aria-label', `Slide ${i + 1}: ${slide.dataset.title || ''}`);
+      btn.addEventListener('click', () => this.goTo(i));
+      this.navDots.appendChild(btn);
+    });
+  }
+
+  attachObserver() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.intersectionRatio < 0.55) return;
+        entry.target.classList.add('visible');
+        const i = this.slides.indexOf(entry.target);
+        if (i !== -1) this.setCurrent(i);
+      });
+    }, { threshold: [0, 0.55, 0.9] });
+    this.slides.forEach((s) => io.observe(s));
+  }
+
+  setCurrent(i) {
+    this.current = i;
+    [...this.navDots.children].forEach((b, j) => b.classList.toggle('active', j === i));
+    this.currSpan.textContent = String(i + 1).padStart(2, '0');
+    this.progressBar.style.width = ((i + 1) / this.slides.length * 100) + '%';
+    this.updateArrowState();
+  }
+
+  goTo(i) {
+    if (i < 0 || i >= this.slides.length) return;
+    this.slides[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  attachKeyboard() {
+    document.addEventListener('keydown', (e) => {
+      if (e.target.matches('input, textarea')) return;
+      const keys = {
+        'ArrowDown': 1, 'ArrowRight': 1, 'PageDown': 1, ' ': 1, 'j': 1,
+        'ArrowUp': -1, 'ArrowLeft': -1, 'PageUp': -1, 'k': -1,
+        'Home': -Infinity, 'End': Infinity,
+      };
+      if (e.key in keys) {
+        e.preventDefault();
+        const delta = keys[e.key];
+        if (delta === -Infinity) this.goTo(0);
+        else if (delta === Infinity) this.goTo(this.slides.length - 1);
+        else this.goTo(this.current + delta);
+      }
+    });
+  }
+
+  attachTouch() {
+    let startY = 0;
+    document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      const diff = startY - e.changedTouches[0].clientY;
+      if (Math.abs(diff) < 50) return;
+      this.goTo(this.current + (diff > 0 ? 1 : -1));
+    }, { passive: true });
+  }
+
+  attachScroll() {
+    let raf = null;
+    document.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        const sh = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = Math.max(0, Math.min(100, (window.scrollY / sh) * 100));
+        this.progressBar.style.width = pct + '%';
+      });
+    }, { passive: true });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new SlidePresentation();
+  document.querySelector('.slide')?.classList.add('visible');
+  initAgentIcons();
+  initHexBg();
+  initAgentScatter();
+  initCursorGlow();
+});
+
+/* ================================================================
+   Agent pixel icon system (SIDEBAR_ICON_DATA from dashboard)
+   ================================================================ */
+const PIXELS = {
+  // TAM AIOS lineup — see ~/.claude/skills/master-slides/agent-icons.md
+  'chief-of-staff':       { color: '#ffffff', grid: [[0,0,1,0],[1,1,1,1],[1,1,1,1],[1,0,1,1],[1,1,1,1],[1,1,1,1],[1,0,0,1],[0,0,0,0]] },
+  'content-designer':     { color: '#f5a623', grid: [[0,0,1,0],[0,0,1,1],[0,1,1,1],[0,1,0,1],[0,1,1,1],[1,1,1,1],[1,0,1,0],[0,0,0,0]] },
+  'web-designer':         { color: '#58abf5', grid: [[0,0,1,0],[0,1,1,1],[1,1,1,1],[0,1,0,1],[0,1,1,1],[1,1,1,0],[0,0,1,0],[0,0,0,0]] },
+  'marketing-specialist': { color: '#6366F1', grid: [[1,0,0,0],[1,1,0,0],[0,1,1,1],[0,1,1,1],[1,1,0,1],[0,1,1,1],[0,1,0,1],[0,0,0,0]] },
+  'funnel-designer':      { color: '#F97066', grid: [[0,0,1,0],[0,0,1,1],[0,1,1,1],[1,1,0,1],[1,1,1,1],[1,1,1,1],[1,0,0,1],[0,0,0,0]] },
+  'business-coach':       { color: '#2DD4BF', grid: [[1,0,1,0],[1,1,1,1],[0,1,1,1],[1,1,0,1],[1,1,1,1],[1,1,1,1],[1,0,0,1],[0,0,0,0]] },
+  // legacy aliases — kept for the scatter decoration code paths
+  'agent-a': { color: '#ffffff', grid: [[0,0,1,0],[1,1,1,1],[1,1,1,1],[1,0,1,1],[1,1,1,1],[1,1,1,1],[1,0,0,1],[0,0,0,0]] },
+  'agent-b': { color: '#58abf5', grid: [[0,0,1,0],[0,1,1,1],[1,1,1,1],[0,1,0,1],[0,1,1,1],[1,1,1,0],[0,0,1,0],[0,0,0,0]] },
+  'agent-c': { color: '#f5a623', grid: [[0,0,1,0],[0,0,1,1],[0,1,1,1],[0,1,0,1],[0,1,1,1],[1,1,1,1],[1,0,1,0],[0,0,0,0]] },
+  'agent-d': { color: '#6366F1', grid: [[1,0,0,0],[1,1,0,0],[0,1,1,1],[0,1,1,1],[1,1,0,1],[0,1,1,1],[0,1,0,1],[0,0,0,0]] },
+  'agent-e': { color: '#2DD4BF', grid: [[0,0,1,0],[0,0,1,1],[0,1,1,1],[1,1,0,1],[1,1,1,1],[1,1,1,1],[1,0,0,1],[0,0,0,0]] },
+  'agent-f': { color: '#F97066', grid: [[0,0,1,1],[0,1,1,1],[1,1,1,1],[1,1,0,1],[1,1,1,1],[0,1,1,1],[0,0,1,1],[0,0,0,0]] },
+};
+
+function drawPixelAgent(canvas, agent, size, colorOverride) {
+  const data = PIXELS[agent];
+  if (!data) return;
+  const cols = 8, rows = data.grid.length;
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = colorOverride || data.color;
+  const px = size / cols, py = size / rows;
+  for (let r = 0; r < rows; r++) {
+    const row = data.grid[r];
+    for (let c = 0; c < 4; c++) {
+      if (row[c]) {
+        ctx.fillRect(Math.floor(c * px), Math.floor(r * py), Math.ceil(px), Math.ceil(py));
+        ctx.fillRect(Math.floor((cols - 1 - c) * px), Math.floor(r * py), Math.ceil(px), Math.ceil(py));
+      }
+    }
+  }
+}
+
+function initAgentIcons() {
+  document.querySelectorAll('canvas[data-agent]').forEach((c) => {
+    drawPixelAgent(c, c.dataset.agent, parseInt(c.getAttribute('width')) || 56);
+  });
+}
+
+/* ================================================================
+   Hex mesh bg
+   ================================================================ */
+function initHexBg() {
+  const hexCanvas = document.getElementById('hexBg');
+  if (!hexCanvas) return;
+  const hexCtx = hexCanvas.getContext('2d');
+  let hexAngle = 0;
+
+  function drawHexGrid() {
+    const W = hexCanvas.width = window.innerWidth;
+    const H = hexCanvas.height = window.innerHeight;
+    hexCtx.clearRect(0, 0, W, H);
+    hexCtx.save();
+    hexCtx.translate(W / 2, H / 2);
+    hexCtx.rotate(hexAngle);
+    hexCtx.translate(-W / 2, -H / 2);
+
+    const hexSize = BG_CONFIG.hexCellSize;
+    const hSpacing = hexSize * Math.sqrt(3);
+    const vSpacing = hexSize * 1.5;
+    const cx0 = W / 2, cy0 = H / 2;
+    const maxDist = Math.sqrt(cx0 * cx0 + cy0 * cy0);
+    const fadeExp = BG_CONFIG.hexFadeExponent;
+    const alphaMax = BG_CONFIG.hexAlphaMax;
+
+    for (let row = -1; row < H / vSpacing + 2; row++) {
+      for (let col = -1; col < W / hSpacing + 2; col++) {
+        const hx = col * hSpacing + (row % 2 ? hSpacing / 2 : 0);
+        const hy = row * vSpacing;
+        const dist = Math.sqrt((hx - cx0) * (hx - cx0) + (hy - cy0) * (hy - cy0));
+        let fade = Math.max(0, 1 - (dist / maxDist) * 0.6);
+        for (let f = 1; f < fadeExp; f++) fade *= fade;
+        const alpha = alphaMax * fade;
+        if (alpha < 0.005) continue;
+        hexCtx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const a = Math.PI / 3 * i - Math.PI / 6;
+          const px = hx + hexSize * Math.cos(a);
+          const py = hy + hexSize * Math.sin(a);
+          i === 0 ? hexCtx.moveTo(px, py) : hexCtx.lineTo(px, py);
+        }
+        hexCtx.closePath();
+        hexCtx.strokeStyle = 'rgba(99, 102, 241,' + alpha + ')';
+        hexCtx.lineWidth = BG_CONFIG.hexLineWidth;
+        hexCtx.stroke();
+      }
+    }
+    hexCtx.restore();
+  }
+
+  function animate() {
+    hexAngle += BG_CONFIG.hexRotationSpeed;
+    drawHexGrid();
+    requestAnimationFrame(animate);
+  }
+  drawHexGrid();
+  requestAnimationFrame(animate);
+  window.addEventListener('resize', drawHexGrid);
+}
+
+/* ================================================================
+   Scattered agent pixel decorations
+   ================================================================ */
+function initAgentScatter() {
+  const decos = [
+    { agent: 'agent-a', top: '12%', left: '5%', size: 48, opacity: 0.08, rotate: -12 },
+    { agent: 'agent-b', top: '28%', right: '7%', size: 56, opacity: 0.07, rotate: 8 },
+    { agent: 'agent-c', top: '55%', left: '3%', size: 40, opacity: 0.08, rotate: 15 },
+    { agent: 'agent-d', top: '72%', right: '4%', size: 52, opacity: 0.06, rotate: -6 },
+    { agent: 'agent-e', bottom: '15%', left: '8%', size: 44, opacity: 0.06, rotate: 22 },
+    { agent: 'agent-f', top: '18%', left: '88%', size: 60, opacity: 0.07, rotate: -10 },
+    { agent: 'agent-a', top: '42%', right: '10%', size: 44, opacity: 0.05, rotate: 5 },
+    { agent: 'agent-b', top: '85%', left: '12%', size: 50, opacity: 0.06, rotate: -15 },
+    { agent: 'agent-c', top: '65%', left: '92%', size: 42, opacity: 0.08, rotate: 12 },
+    { agent: 'agent-e', top: '8%', left: '50%', size: 36, opacity: 0.05, rotate: -8 },
+    { agent: 'agent-d', top: '48%', left: '6%', size: 72, opacity: 0.04, rotate: 3 },
+    { agent: 'agent-f', bottom: '25%', right: '15%', size: 80, opacity: 0.04, rotate: -3 }
+  ];
+
+  const limit = Math.min(BG_CONFIG.scatterCount, decos.length);
+  const opSpan = BG_CONFIG.scatterOpacityMax - BG_CONFIG.scatterOpacityMin;
+
+  decos.slice(0, limit).forEach((d, i) => {
+    const c = document.createElement('canvas');
+    c.className = 'pixel-agent';
+    if (d.top) c.style.top = d.top;
+    if (d.bottom) c.style.bottom = d.bottom;
+    if (d.left) c.style.left = d.left;
+    if (d.right) c.style.right = d.right;
+    c.style.width = d.size + 'px';
+    c.style.height = d.size + 'px';
+    c.style.opacity = (BG_CONFIG.scatterOpacityMin + (i % 5) / 4 * opSpan).toFixed(3);
+    c.style.transform = 'rotate(' + d.rotate + 'deg)';
+    document.body.appendChild(c);
+    drawPixelAgent(c, d.agent, d.size * 2, '#6366F1');
+  });
+}
+
+/* ================================================================
+   Cursor glow (gentle trailing highlight)
+   ================================================================ */
+function initCursorGlow() {
+  const glow = document.getElementById('cursorGlow');
+  if (!glow) return;
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  let gx = mx, gy = my;
+  document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+  (function tick() {
+    gx += (mx - gx) * 0.12;
+    gy += (my - gy) * 0.12;
+    glow.style.left = gx + 'px';
+    glow.style.top = gy + 'px';
+    requestAnimationFrame(tick);
+  })();
+}
+</script>
+</body>
+</html>
