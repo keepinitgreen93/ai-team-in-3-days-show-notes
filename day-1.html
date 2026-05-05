@@ -2104,9 +2104,12 @@ strong, .accent { color: var(--accent); font-weight: inherit; }
   .stat-row .stat .lbl { font-size: 9px; letter-spacing: 0.12em; }
 
   /* ── Steps list ── */
+  /* NOTE: ::before counter badge is 50px wide @ left:-1px (spans -1 to 49px)
+     with solid var(--bg) background, so li padding-left MUST be ≥56px or the
+     badge background will mask the start of the bold text. */
   .steps-list { max-width: 100%; }
   .steps-list li {
-    padding: 12px 14px 12px 48px;
+    padding: 12px 14px 12px 56px;
     font-size: 0.95rem;
   }
 
@@ -2160,6 +2163,24 @@ strong, .accent { color: var(--accent); font-weight: inherit; }
     max-width: 100%;
     padding: 18px 20px;
   }
+
+  /* ── Three-beat row (Slide 30): compact cards so 3 cards + h2 fit in 100vh ── */
+  .three-beat-row {
+    margin-top: 1.2rem;
+    gap: 10px;
+  }
+  .beat-card { padding: 14px 16px; border-radius: 16px; }
+  .beat-card .beat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .beat-card .beat-num { font-size: 0.65rem; margin-bottom: 2px; }
+  .beat-card .beat-name { font-size: 1.4rem; margin-bottom: 2px; }
+  .beat-card .beat-verb { font-size: 0.65rem; margin-bottom: 4px; }
+  .beat-card .beat-line { font-size: 0.85rem; line-height: 1.4; }
+  .beat-card .pulse { top: 12px; right: 12px; width: 6px; height: 6px; }
 }
 
 /* ── Small phone (≤ 480px) ── */
@@ -2185,8 +2206,14 @@ strong, .accent { color: var(--accent); font-weight: inherit; }
     transform: scale(0.62);
   }
 
-  /* q-grid → single col */
-  .q-grid { grid-template-columns: 1fr; }
+  /* q-grid stays 2-col on phone too — 12 items in 1 col overflows 100vh */
+  .q-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .q-tile { padding: 8px 8px; }
+  .q-tile .q-num { font-size: 8px; letter-spacing: 0.10em; }
+  .q-tile .q-text { font-size: 10.5px; line-height: 1.35; }
 
   /* Stats row → single col */
   .stat-row { grid-template-columns: 1fr; }
