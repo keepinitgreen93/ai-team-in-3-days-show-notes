@@ -1863,6 +1863,343 @@ strong, .accent { color: var(--accent); font-weight: inherit; }
 .wikilink-demo .wl-target {
   color: var(--teal);
 }
+
+/* ═════════════════════════════════════════════════════════════
+   Mobile Responsive (added v1.1.2)
+   Breakpoints: 1024px tablet, 768px tablet portrait + phone, 480px small phone
+   Strategy: stack two-column layouts vertically, scale 3D scenes down, hide
+   desktop-only affordances (cursor glow, nav dots), ensure 44px touch targets,
+   add safe-area insets for notched phones.
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── Tablet landscape & below (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  :root {
+    --slide-padding: clamp(1.5rem, 5vw, 3.5rem);
+  }
+  .iso-slide .slide-content {
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 3vw, 36px);
+    padding: clamp(1.5rem, 4vw, 3rem) var(--slide-padding);
+  }
+  .iso-stage { max-width: 480px; max-height: 50vh; }
+  .three-beat-row { grid-template-columns: 1fr 1fr; }
+  .q-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── Tablet portrait + phone (≤ 768px) ── */
+@media (max-width: 768px) {
+  :root {
+    --slide-padding: clamp(1rem, 4vw, 2rem);
+    --title-size: clamp(1.85rem, 8vw, 2.8rem);
+    --h2-size: clamp(1rem, 4.4vw, 1.4rem);
+    --h3-size: clamp(0.65rem, 2.6vw, 0.78rem);
+    --body-size: clamp(0.9rem, 3.6vw, 1.05rem);
+  }
+
+  /* Disable cursor glow + reduce hex bg opacity (no cursor on mobile) */
+  .cursor-glow { display: none !important; }
+  #hexBg { opacity: 0.55; }
+
+  /* Slides: enable scroll inside if needed + iOS safe-area insets */
+  .slide {
+    height: 100dvh;
+  }
+  .slide-content {
+    padding-top: max(var(--slide-padding), env(safe-area-inset-top, 0px));
+    padding-bottom: max(calc(var(--slide-padding) + 56px), calc(env(safe-area-inset-bottom, 0px) + 56px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+  }
+  /* Keep .lead slides centered even when overflow:auto */
+  .lead .slide-content { justify-content: center; }
+
+  /* Headings */
+  h1.display { max-width: none; }
+  h2 { max-width: none; }
+  .iso-text h2.scene-title {
+    font-size: clamp(1.5rem, 6.5vw, 2.2rem);
+    max-width: none;
+  }
+  .iso-text .body-text { max-width: none; font-size: clamp(0.92rem, 3.6vw, 1rem); }
+
+  /* Iso stage scaled down on mobile */
+  .iso-stage {
+    aspect-ratio: 4 / 3;
+    max-width: 100%;
+    max-height: 38vh;
+    transform: scale(0.7);
+    transform-origin: center top;
+  }
+
+  /* Bullets — larger touch targets, more line spacing */
+  .bullets {
+    max-width: 100%;
+  }
+  .bullets li {
+    font-size: clamp(0.95rem, 3.8vw, 1.1rem);
+    line-height: 1.7;
+    margin-bottom: clamp(0.7rem, 2.2vw, 1rem);
+    min-height: 44px;
+    padding-left: 1.4rem;
+  }
+
+  /* Logos row */
+  .logos-row { gap: 0.45rem; max-width: 100%; }
+  .logo-pill { padding: 0.55rem 0.95rem; font-size: 0.72rem; }
+
+  /* Title-slide brand block — scale logo down */
+  .brand-block { gap: 12px; padding-top: 1rem; margin-top: 1.1rem; }
+  .brand-block .tam-logo {
+    height: clamp(56px, 14vw, 76px);
+    max-width: 200px;
+    border-radius: 14px;
+  }
+  .brand-block .title-line { font-size: 0.65rem; }
+  .brand-block .tag-line { font-size: 0.78rem; }
+
+  /* ── Fixed UI: hide nav-dots, scale watermark, reposition slide-number ── */
+  .nav-dots { display: none !important; }
+  .progress-bar { height: 2px; }
+  .watermark {
+    bottom: 14px; left: 14px;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    gap: 6px;
+  }
+  .watermark svg { width: 22px; height: 22px; }
+  .watermark .bar { display: none; }
+  .slide-number {
+    position: fixed;
+    bottom: 14px;
+    right: 14px;
+    left: auto;
+    font-size: 0.6rem;
+  }
+  /* Nav arrows — bottom-center, 44px+ touch targets */
+  .nav-arrows { bottom: 12px; gap: 14px; }
+  .nav-arrow {
+    width: 44px; height: 44px;
+  }
+  .nav-arrow svg { width: 18px; height: 18px; }
+
+  /* ── Three-beat row: stack to single column ── */
+  .three-beat-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 100%;
+  }
+  .beat-card { padding: 1.2rem 1.1rem; }
+  .beat-card .beat-name { font-size: clamp(1.5rem, 6vw, 1.8rem); }
+  .beat-card .beat-icon { width: 56px; height: 56px; margin-bottom: 0.85rem; }
+
+  /* ── Pyramid scene: scale down ── */
+  .scene-pyramid { padding: 18px 12px; gap: 10px; }
+  .scene-pyramid .pyramid-tier { font-size: 9.5px; padding: 8px 10px; gap: 6px; }
+  .scene-pyramid .tier-1 { width: 60%; }
+  .scene-pyramid .tier-2 { width: 78%; }
+  .scene-pyramid .tier-3 { width: 96%; gap: 8px; }
+  .scene-pyramid .pyramid-tier .role-tag { font-size: 10px; }
+  .scene-pyramid .tier-3 .spec-chip { font-size: 9px; padding: 4px 8px; }
+
+  /* ── Brain anatomy (file tree): smaller font + allow wrap ── */
+  .scene-brain { padding: 16px; }
+  .scene-brain .file-tree {
+    font-size: 10px;
+    line-height: 1.7;
+    white-space: normal;
+  }
+  .scene-brain .ft-comment { font-size: 9px; }
+
+  /* ── Q-grid: 2-col on tablet portrait, 1-col on phone ── */
+  .q-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+    gap: 8px;
+  }
+  .q-tile { padding: 11px 10px; }
+  .q-tile .q-text { font-size: 11px; }
+  .q-bucket-legend {
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 9px;
+  }
+
+  /* ── Toni Q&A: stack Q on its own line ── */
+  .toni-qa {
+    grid-template-columns: 1fr;
+    gap: 4px 0;
+    max-width: 100%;
+  }
+  .toni-qa .qa-q {
+    white-space: normal;
+    margin-top: 12px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .toni-qa .qa-q:first-child { margin-top: 0; }
+  .toni-qa .qa-a { font-size: 0.95rem; line-height: 1.55; }
+
+  /* ── Hire Memo: stack rows vertically + full width ── */
+  .hire-memo {
+    max-width: 100%;
+    padding: 18px 18px;
+  }
+  .hire-memo .memo-title { font-size: 1.1rem; }
+  .hire-memo .memo-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 10px 0;
+  }
+  .hire-memo .memo-row .why { font-size: 11.5px; }
+  .hire-memo .memo-row .badge,
+  .hire-memo .memo-row .order { justify-self: start; }
+
+  /* ── Q→Page mapping: stack arrow flow vertically ── */
+  .qmap-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    max-width: 100%;
+    text-align: left;
+  }
+  .qmap-row .q-pill { justify-self: start; }
+  .qmap-row .q-arrow {
+    transform: rotate(90deg);
+    justify-self: start;
+    padding-left: 6px;
+  }
+  .qmap-row .q-page { word-break: break-all; }
+
+  /* ── Code block: horizontal scroll, smaller font ── */
+  .code-block {
+    padding: 18px 18px;
+    font-size: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    border-radius: 12px;
+  }
+  .code-block .cb-head { font-size: 9px; }
+  .code-block pre, .code-block code { white-space: pre; }
+
+  /* ── Setup tiles: stack to single column ── */
+  .setup-tiles {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 100%;
+  }
+  .setup-tile { padding: 18px 20px; }
+
+  /* ── Stat row: 3 in one row but smaller ── */
+  .stat-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 100%;
+  }
+  .stat-row .stat { padding: 12px 10px; }
+  .stat-row .stat .num { font-size: clamp(1.2rem, 5vw, 1.6rem); }
+  .stat-row .stat .lbl { font-size: 9px; letter-spacing: 0.12em; }
+
+  /* ── Steps list ── */
+  .steps-list { max-width: 100%; }
+  .steps-list li {
+    padding: 12px 14px 12px 48px;
+    font-size: 0.95rem;
+  }
+
+  /* ── Claude mock: scale down ── */
+  .claude-mock {
+    padding: 14px 16px;
+    font-size: 11px;
+    max-width: 100%;
+  }
+
+  /* ── Scene orbit: scale rings down to fit ── */
+  .scene-orbit { transform: scale(1); }
+  .scene-orbit .ring.r1 { width: 92%; height: 92%; }
+  .scene-orbit .ring.r2 { width: 64%; height: 64%; }
+  .scene-orbit .ring.r3 { width: 36%; height: 36%; }
+  .scene-orbit .ring-label { font-size: 9px; }
+
+  /* ── Scene hub: scale + tighter nodes ── */
+  .scene-hub .hub-center { width: 78px; height: 78px; font-size: 10px; }
+  .scene-hub .hub-node { font-size: 9px; padding: 5px 8px; }
+
+  /* ── Scene tower: keep but allow tighter labels ── */
+  .scene-tower .tower-labels { font-size: 9px; }
+
+  /* ── Wikilink demo ── */
+  .wikilink-demo {
+    font-size: 0.95rem;
+    padding: 12px 16px;
+    max-width: 100%;
+    word-break: break-word;
+  }
+  .wikilink-demo .wl-arrow { margin: 0 8px; }
+
+  /* ── CTA pause-and-do block ── */
+  .cta-block {
+    padding: 12px 18px;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    flex-wrap: wrap;
+  }
+
+  /* ── Lesson marker ── */
+  .lesson-marker {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+  }
+  .lesson-marker .pipe { margin: 0 6px; }
+
+  /* ── Deliverable card ── */
+  .deliverable-card {
+    max-width: 100%;
+    padding: 18px 20px;
+  }
+}
+
+/* ── Small phone (≤ 480px) ── */
+@media (max-width: 480px) {
+  :root {
+    --title-size: clamp(1.65rem, 8vw, 2.4rem);
+    --slide-padding: 1rem;
+  }
+
+  /* Hide watermark on tiny screens to free up bottom-bar real estate */
+  .watermark { display: none; }
+
+  /* Center the nav-arrows + slide-number on bottom bar */
+  .nav-arrows { bottom: 10px; }
+  .slide-number {
+    bottom: 10px;
+    font-size: 0.55rem;
+  }
+
+  /* Tighter iso-stage scaling */
+  .iso-stage {
+    max-height: 32vh;
+    transform: scale(0.62);
+  }
+
+  /* q-grid → single col */
+  .q-grid { grid-template-columns: 1fr; }
+
+  /* Stats row → single col */
+  .stat-row { grid-template-columns: 1fr; }
+  .stat-row .stat { padding: 10px 14px; }
+  .stat-row .stat .num { font-size: 1.4rem; }
+
+  /* Brand block — even smaller logo */
+  .brand-block .tam-logo { height: 48px; max-width: 160px; }
+  .brand-block .title-line { font-size: 0.6rem; letter-spacing: 0.16em; }
+
+  /* Bullets */
+  .bullets li { font-size: 0.92rem; padding-left: 1.2rem; }
+}
 </style>
 </head>
 
