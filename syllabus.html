@@ -331,30 +331,6 @@
     border-color: rgba(249, 112, 102, 0.3);
   }
 
-  .day-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 22px;
-    padding: 12px 22px;
-    background: var(--tam-charcoal);
-    color: var(--tam-white);
-    border-radius: var(--radius-pill);
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: -0.005em;
-    transition: transform 0.2s ease, background 0.2s ease;
-  }
-
-  .day-cta:hover { background: var(--tam-deep-indigo); color: var(--tam-white); transform: translateX(3px); }
-  .day-cta svg { width: 16px; height: 16px; }
-
-  .day-panel.day-2 .day-cta { background: #0F766E; }
-  .day-panel.day-2 .day-cta:hover { background: #134E4A; color: var(--tam-white); }
-  .day-panel.day-3 .day-cta { background: #BE3A2A; }
-  .day-panel.day-3 .day-cta:hover { background: #9A2D1F; color: var(--tam-white); }
-
   /* ─────────────────────────────────────────────
      Outcomes block — what you walk away with
      ───────────────────────────────────────────── */
@@ -367,7 +343,7 @@
 
   .outcomes h2,
   .who h2,
-  .resources h2 {
+  .cta-card h2 {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(22px, 3vw, 28px);
@@ -497,56 +473,108 @@
   .who-card.no li svg { color: var(--tam-coral); }
 
   /* ─────────────────────────────────────────────
-     Resources / Footer — same as index
+     Academy CTA block — single coral signature CTA
      ───────────────────────────────────────────── */
-  .resources {
-    background: var(--tam-white);
+  .cta-block {
+    background: var(--tam-ghost-white);
     border-top: 1px solid var(--tam-lavender);
-    padding: 56px 0 64px;
+    padding: 72px 0 88px;
   }
 
-  .res-list { list-style: none; padding: 0; }
-
-  .res-list li {
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(199, 210, 254, 0.5);
-    display: flex;
-    align-items: center;
-    gap: 14px;
+  .cta-card {
+    background: linear-gradient(135deg, var(--tam-charcoal) 0%, var(--tam-deep-indigo) 100%);
+    color: var(--tam-white);
+    border-radius: 32px;
+    padding: clamp(40px, 6vw, 64px) clamp(24px, 5vw, 48px);
+    text-align: center;
+    box-shadow: 0 18px 48px rgba(67, 56, 202, 0.18);
+    position: relative;
+    overflow: hidden;
   }
 
-  .res-list li:last-child { border-bottom: none; }
-
-  .res-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: rgba(99, 102, 241, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: var(--tam-indigo);
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top right, rgba(249, 112, 102, 0.18), transparent 55%);
+    pointer-events: none;
   }
 
-  .res-link {
-    font-family: var(--font-body);
-    font-weight: 600;
-    color: var(--tam-charcoal);
-    text-decoration: none;
-    flex: 1;
-  }
+  .cta-card > * { position: relative; z-index: 1; }
 
-  .res-link:hover { color: var(--tam-indigo); }
-
-  .res-meta {
+  .cta-eyebrow {
     font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--tam-cool-gray);
+    letter-spacing: 0.18em;
     text-transform: uppercase;
+    color: var(--tam-soft-indigo);
+    font-weight: 600;
+    margin-bottom: 14px;
   }
 
+  .cta-headline {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(26px, 4vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--tam-white);
+    margin-bottom: 16px;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-headline .hand {
+    font-family: var(--font-hand);
+    color: var(--tam-coral);
+    font-weight: 400;
+  }
+
+  .cta-sub {
+    font-family: var(--font-body);
+    font-size: clamp(14px, 1.6vw, 16px);
+    color: var(--tam-lavender);
+    max-width: 560px;
+    margin: 0 auto 28px;
+    line-height: 1.65;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--tam-coral);
+    color: var(--tam-white);
+    padding: 16px 32px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(15px, 1.6vw, 17px);
+    letter-spacing: -0.005em;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 18px rgba(249, 112, 102, 0.3);
+  }
+
+  .cta-btn:hover {
+    background: #DC5A50;
+    color: var(--tam-white);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(249, 112, 102, 0.42);
+  }
+
+  .cta-fine {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(199, 210, 254, 0.7);
+    margin-top: 16px;
+  }
+
+  /* ─────────────────────────────────────────────
+     Footer — same as index
+     ───────────────────────────────────────────── */
   footer {
     background: var(--tam-ghost-white);
     padding: 40px 24px 56px;
@@ -675,10 +703,6 @@
       </li>
     </ol>
 
-    <a href="day-1.html" class="day-cta">
-      Open Day 01 deck
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-    </a>
   </section>
 
   <!-- ════════════════════ DAY 2 ════════════════════ -->
@@ -722,10 +746,6 @@
       </li>
     </ol>
 
-    <a href="day-2.html" class="day-cta">
-      Open Day 02 deck
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-    </a>
   </section>
 
   <!-- ════════════════════ DAY 3 ════════════════════ -->
@@ -769,10 +789,6 @@
       </li>
     </ol>
 
-    <a href="day-3.html" class="day-cta">
-      Open Day 03 deck
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-    </a>
   </section>
 
 </main>
@@ -889,42 +905,19 @@
   </div>
 </section>
 
-<!-- ════════════════════ RESOURCES ════════════════════ -->
-<section class="resources">
+<!-- ════════════════════ JOIN THE ACADEMY ════════════════════ -->
+<section class="cta-block">
   <div class="container">
-    <span class="section-eyebrow">Everything you need</span>
-    <h2>Resources.</h2>
-    <p class="lead">The course is included with the AI Business Growth Academy. Skills + templates ship as a public marketplace install.</p>
-    <ul class="res-list">
-      <li>
-        <span class="res-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-        </span>
-        <a class="res-link" href="https://github.com/keepinitgreen93/ai-team-in-3-days" target="_blank" rel="noopener">GitHub Marketplace · keepinitgreen93/ai-team-in-3-days</a>
-        <span class="res-meta">Skills + Templates</span>
-      </li>
-      <li>
-        <span class="res-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
-        </span>
-        <a class="res-link" href="https://academy.trulyauthenticmarketing.com" target="_blank" rel="noopener">AI Business Growth Academy</a>
-        <span class="res-meta">$1 trial · $97/mo</span>
-      </li>
-      <li>
-        <span class="res-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-        </span>
-        <a class="res-link" href="index.html">Show notes home — all 3 deck links</a>
-        <span class="res-meta">Show Notes</span>
-      </li>
-      <li>
-        <span class="res-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        </span>
-        <a class="res-link" href="https://trulyauthenticmarketing.com" target="_blank" rel="noopener">Truly Authentic Marketing</a>
-        <span class="res-meta">Built by</span>
-      </li>
-    </ul>
+    <div class="cta-card">
+      <p class="cta-eyebrow">Ready to install your team?</p>
+      <h2 class="cta-headline">The full 3-day install lives <span class="hand">inside the Academy.</span></h2>
+      <p class="cta-sub">Hire your first 3 AI Employees with us inside — community, weekly office hours, monthly Specialist drops, and every template Chris uses to run TAM. One trial. Everything unlocked.</p>
+      <a href="https://academy.trulyauthenticmarketing.com" class="cta-btn" target="_blank" rel="noopener">
+        Try the Academy for $1
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+      <p class="cta-fine">$97/mo after trial · Cancel anytime</p>
+    </div>
   </div>
 </section>
 
